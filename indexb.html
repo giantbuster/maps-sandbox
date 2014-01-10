@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        html {
+            height: 100% ;
+        }
+        body { 
+            height: 100%; 
+            margin: 0; 
+            padding: 0; 
+        }
+        #snapshot, #map-canvas{
+            height: 500px;
+            width: 500px;
+            background: #e1e1e1;
+            display: inline-block;
+        }
+    </style>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY&sensor=false">
+    </script>
+    <script type="text/javascript">
+        // function initialize() {
+        //     var mapOptions = {
+        //         center: new google.maps.LatLng(-34.397, 150.644),
+        //         zoom: 8
+        //     };
+        //     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        // }
+        // google.maps.event.addDomListener(window, 'load', initialize);
+
+        var webService = new google.maps.StreetViewService();
+        var radius = 50;
+        var imgWidth = 500;
+        var imgHeight = 500;
+        var imgFOV = 90;
+        var imgHeading = 355;
+        var imgPitch = 10;
+
+        
+        
+        //callback function for getPanoramaByLocation
+        function checkNearestStreetView(panoData){
+            console.log("Finding nearest street view...");
+            if(panoData){
+                // console.log("Test 1");
+                 if(panoData.location){
+                    // console.log("Test 2");
+                    if(panoData.location.latLng){
+                        console.log("Street view found!");
+
+                        //create Latlng object
+                        var coordinates = new google.maps.LatLng(panoData.location.latLng.b, panoData.location.latLng.d);
+
+                        //create HTML tag for streetview image
+                        var url = "<img src='http://maps.googleapis.com/maps/api/streetview?size="+
+                                    imgWidth+"x"+imgHeight+
+                                    "&location="+
+                                    coordinates.b+","+coordinates.d+
+                                    "&fov="+
+                                    imgFOV+
+                                    "&heading="+
+                                    imgHeading+
+                                    "&pitch="+
+                                    imgPitch+
+                                    "&sensor=false'>";
+
+                        //display streetview image
+                        document.getElementById('snapshot').innerHTML = url;
+
+                        //set map options
+                        var mapOptions = {
+                            center: coordinates,
+                            zoom: 11
+                        };
+
+                        //create map object
+                        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+                        //create point object on map
+                        var marker = new google.maps.Marker({
+                            position: coordinates,
+                            map: map,
+                            title: 'Hello World!'
+                        });
+
+                        //display map
+                        google.maps.event.addDomListener(window, 'load');
+                    }
+                }
+            } else {
+                console.log("Street view not found");
+            }
+        }
+
+        // console.log(astorPlace);
+        // webService.getPanoramaByLocation(astorPlace, radius, checkNearestStreetView);
+        
+        function getLatLong(){
+            var address = document.getElementById('address').value;
+            var geo = new google.maps.Geocoder;
+            geo.geocode({'address':address},function(results, status){
+                if (status == google.maps.GeocoderStatus.OK) {
+                    console.log("Lat-Lng found!");
+                    console.log(results[0].geometry.location);
+                    webService.getPanoramaByLocation(results[0].geometry.location, radius, checkNearestStreetView);
+                } else {
+                    console.log("Geocode was not successful for the following reason: " + status);
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+
+<body>
+    <form id="search" onsubmit="return getLatLong();">
+        <input id="address" type="textbox" placeholder="San Francisco, CA">
+        <input type="submit" value="Geocode">
+    </form>
+    <div id="snapshot"></div>
+    <div id="map-canvas"></div>
+</body>
+</html>
