@@ -64,7 +64,7 @@
             var currentIteration = 0;
             var googleOverviewPath;
             var pathZoom;
-            var LIMIT = 100;
+            var LIMIT = 20;
             
             //Finds directions from pointA to pointB using Google Maps API
             function calcRoute() {
@@ -107,28 +107,23 @@
             function findPanorama(coordinates, index){
                 webService.getPanoramaByLocation(coordinates, radius, function(result, status){
                     currentIteration++;
-                    // panoArray.push(result);
                     panoArray[index] = result;
                     if (currentIteration == (LIMIT<googleOverviewPath.length?LIMIT:googleOverviewPath.length)){
-                        console.log(panoArray);
-                        trimNull();
+                        trimNull(panoArray);
                         insertHeadings();
                         showAllStreetViewHTML();
                     }
                 });
             }
             
-            function trimNull(){
-                for(var i = 0; i<panoArray.length; i++) {
-                    // console.log('trimming...');
-                    // console.log(panoArray[i]);
-                    if(panoArray[i] == null) {
-                        console.log('this is null');
-                        panoArray.splice(i--, 1);
+            //Removes null elements from an array
+            function trimNull(array){
+                for(var i = 0; i<array.length; i++) {
+                    if(array[i] == null) {
+                        console.log('splicing');
+                        array.splice(i--, 1);
                     }
                 }
-                console.log('Trim complete');
-                console.log(panoArray);
             }
 
             //Calculates heading for every element in panoArray
@@ -147,8 +142,6 @@
 
             //Generates HTML for street view images from information in panoArray
             function showAllStreetViewHTML(){
-                console.log('Generating HTML...')
-                console.log(panoArray);
                 for (var i = 0; i<panoArray.length; i++){
                     var html = streetViewHTML(panoArray[i]);
                     markerArray.push(createMarker(panoArray[i].location.latLng));
