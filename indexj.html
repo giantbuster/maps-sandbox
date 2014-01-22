@@ -64,7 +64,7 @@
             var currentIteration = 0;
             var googleOverviewPath;
             var pathZoom;
-            var LIMIT = 20;
+            var LIMIT = 100;
             
             //Finds directions from pointA to pointB using Google Maps API
             function calcRoute() {
@@ -99,18 +99,17 @@
                 resetStreetViews();
                 currentIteration = 0;
                 for (var i = 0; i < (LIMIT<googleOverviewPath.length?LIMIT:googleOverviewPath.length); i++){
-                    findPanorama(coordinatesArray[i]);
+                    findPanorama(coordinatesArray[i], i);
                 }
             }
             
             //Finds a single panoramic image
-            function findPanorama(coordinates){
+            function findPanorama(coordinates, index){
                 webService.getPanoramaByLocation(coordinates, radius, function(result, status){
                     currentIteration++;
-                    // console.log(result);
-                    panoArray.push(result);
+                    // panoArray.push(result);
+                    panoArray[index] = result;
                     if (currentIteration == (LIMIT<googleOverviewPath.length?LIMIT:googleOverviewPath.length)){
-                        console.log('Iterations complete');
                         console.log(panoArray);
                         trimNull();
                         insertHeadings();
