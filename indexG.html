@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        html {
+            height: 100% ;
+        }
+        body { 
+            height: 100%; 
+            margin: 0; 
+            padding: 0; 
+        }
+        #snapshot, #map-canvas, #map-canvas2, #map-coordinates{
+            height: 500px;
+            width: 500px;
+            background: #e1e1e1;
+            display: inline-block;
+        }
+        #directions-streetview img{
+            display: inline-block;
+        }
+    </style>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY&sensor=false">
+    </script>
+    <script type="text/javascript">
+        // function initialize() {
+        //     var mapOptions = {
+        //         center: new google.maps.LatLng(-34.397, 150.644),
+        //         zoom: 8
+        //     };
+        //     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        // }
+        // google.maps.event.addDomListener(window, 'load', initialize);
+
+        var webService = new google.maps.StreetViewService();
+        var radius = 20;
+        var imgWidth = 500;
+        var imgHeight = 500;
+        var imgFOV = 90;
+        var imgHeading = 355;
+        var imgPitch = 10;
+        var apiKey = 'AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY';
+        
+        
+        //callback function for getPanoramaByLocation
+        // function findStreetView(panoData){
+        //     console.log("Finding nearest street view...");
+        //     if(panoData && panoData.location && panoData.location.latLng){
+        //         console.log("Street view found!");
+
+        //         //create Latlng object
+        //         var coordinates = new google.maps.LatLng(panoData.location.latLng.b, panoData.location.latLng.d);
+        //         showStreetView(coordinates);
+        //         showMap(coordinates);
+        //     } else {
+        //         console.log("Street view not found");
+        //     }
+        // }
+
+        // function showStreetView(coordinates){
+        //     //create HTML tag for streetview image
+        //     var url = "<img src='http://maps.googleapis.com/maps/api/streetview?size="+
+        //                 imgWidth+"x"+imgHeight+
+        //                 "&location="+
+        //                 coordinates.b+","+coordinates.d+
+        //                 "&fov="+
+        //                 imgFOV+
+        //                 "&heading="+
+        //                 imgHeading+
+        //                 "&pitch="+
+        //                 imgPitch+
+        //                 "&sensor=false'>";
+
+        //     //display streetview image
+        //     document.getElementById('snapshot').innerHTML = url;
+        // }
+
+        // function showMap(coordinates){
+        //     //set map options
+        //     var mapOptions = {
+        //         center: 'coordinates',
+        //         zoom: 11
+        //     };
+
+        //     //create map object
+        //     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        //     //create point object on map
+        //     var marker = new google.maps.Marker({
+        //         position: coordinates,
+        //         map: map,
+        //         title: 'Hello World!'
+        //     });
+
+        //     //display map
+        //     google.maps.event.addDomListener(window, 'load');
+        // }
+        
+        // function tryStreetView(){
+        //     var address = {'address' : document.getElementById('address').value};
+
+        //     var geo = new google.maps.Geocoder;
+        //     geo.geocode(address, function(results, status){
+        //         if (status == google.maps.GeocoderStatus.OK) {
+        //             console.log("Lat-Lng found!");
+        //             console.log(results[0]);
+        //             webService.getPanoramaByLocation(results[0].geometry.location, radius, findStreetView);
+        //         } else {
+        //             console.log("Geocode was not successful for the following reason: " + status);
+        //         }
+        //     });
+        //     return false;
+        // }
+
+        var directionsDisplay = new google.maps.DirectionsRenderer();
+        var directionsService = new google.maps.DirectionsService();
+        var map2;
+
+        function initialize() {
+            directionsDisplay = new google.maps.DirectionsRenderer();
+            var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+            var mapOptions = {
+                zoom:7,
+                center: chicago
+            }
+            map2 = new google.maps.Map(document.getElementById('map-canvas2'), mapOptions);
+            directionsDisplay.setMap(map2);
+        }
+        
+        function calcRoute() {
+            var start = document.getElementById('start').value;
+            var end = document.getElementById('end').value;
+            var request = {
+                origin:start,
+                destination:end,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                    console.log(response.routes[0]);
+                    tryAllStreetViews(response.routes[0].overview_path);
+                }
+            });
+            return false;
+        }
+
+        
+        function tryAllStreetViews(coordinates){
+            
+            resetStreetViews();
+            // for (var i = 0; i<(coordinates.length<1? coordinates.length : 1); i++){
+            // for (var i = 0; i<coordinates.length; i++){
+            for (var i = 0; i<1; i++){
+                if (i != coordinates.length-1){
+                    console.log("Current coordinates obj:");
+                    console.log(coordinates[i]);
+                    console.log("coordinates[i].brng : should be undefined: " + coordinates[i].brng);
+
+                    bearing = getBearing(coordinates[i].b, coordinates[i].d, coordinates[i+1].b, coordinates[i+1].d)
+                    console.log("Bearing calculated:");
+                    console.log(bearing);
+
+                    console.log("Inserting bearing:");
+                    coordinates[i].brng = bearing;
+                    console.log(coordinates[i]);
+                    console.log("coordinates[i].brng : should be defined: " + coordinates[i].brng);
+                }
+                var tmp = webService.getPanoramaByLocation(coordinates[i], radius, findAllStreetViews);
+                // console.log(tmp);
+            }
+            return false;
+        }
+
+        function findAllStreetViews(panoData){
+            var coordinates = new google.maps.LatLng(panoData.location.latLng.b, panoData.location.latLng.d);
+            // console.log("coordinates : " + coordinates);
+            return coordinates;
+            // showAllStreetViews(coordinates);
+        }
+
+        function resetStreetViews(){
+            document.getElementById('directions-streetview').innerHTML = "";
+        }
+
+        function showAllStreetViews(coordinates){
+            //create HTML tag for streetview image
+            console.log('Coordinates: ' + coordinates);
+            var url = "<img src='http://maps.googleapis.com/maps/api/streetview?size="+
+                        150+"x"+150+
+                        "&location="+
+                        coordinates.b+","+coordinates.d+
+                        "&fov="+
+                        imgFOV+
+                        "&heading="+
+                        // coordinates.brng+
+                        coordinates.brng+
+                        "&pitch="+
+                        imgPitch+
+                        "&key"+
+                        apiKey+
+                        "&sensor=false'><br>";
+
+            //display streetview image and properties
+            document.getElementById('directions-streetview').innerHTML += "Coordinates: "+coordinates.b+","+coordinates.d+"<br>";
+            document.getElementById('directions-streetview').innerHTML += "Heading: "+coordinates.brng+"<br>";
+            document.getElementById('directions-streetview').innerHTML += url;
+
+            //create map point of street view image
+            showMappedCoordinates(coordinates, map2);
+        }
+
+        //creates a point on a map
+        function showMappedCoordinates(coordinates, gMap){
+            //create point object on map
+            var marker = new google.maps.Marker({
+                position: coordinates,
+                map: gMap,
+                title: 'Hello World!'
+            });
+        }
+
+        function getBearing(lat1,lon1,lat2,lon2) {
+            var dLon = (lon2-lon1).toRad();
+            var y = Math.sin(dLon) * Math.cos(lat2);
+            var x = Math.cos(lat1)*Math.sin(lat2) -
+                    Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+            var brng = Math.atan2(y, x).toDeg();
+            return brng;
+        }
+
+        Number.prototype.toRad = function() {
+            return this * Math.PI / 180;
+        }
+
+        Number.prototype.toDeg = function() {
+            return this * 180 / Math.PI;
+        }
+
+        
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body>
+    <!-- <form id="search" onsubmit="return tryStreetView();">
+        <input id="address" type="textbox" placeholder="San Francisco, CA">
+        <input type="submit" value="Geocode">
+    </form>
+    <div id="snapshot"></div>
+    <div id="map-canvas"></div> -->
+
+    <div id="panel">
+        <form id="searchDirections" onsubmit="return calcRoute();">
+            <p>846-898 Santiago St, San Francisco, CA 94116</p>
+            <p>Safeway, 730 Taraval St, San Francisco, CA 94116</p>
+            <b>Start: </b>
+            <input type="text" id="start">
+            <b>End: </b>
+            <input type="text" id="end">
+            <input type="submit" value="Go">
+        </form>
+    </div>
+    <div id="map-canvas2"></div>
+    <!-- <div id="map-coordinates"></div> -->
+    <div id="directions-streetview"></div>
+</body>
+</html>

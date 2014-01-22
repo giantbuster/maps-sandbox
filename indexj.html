@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        html {
+            height: 100% ;
+            font-family: helvetica;
+        }
+        body { 
+            height: 100%; 
+            margin: 0; 
+            padding: 0; 
+        }
+        #map-canvas{
+            height: 250px;
+            width: 250px;
+            background: #e1e1e1;
+            display: inline-block;
+        }
+        .street-image{
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-size: cover;
+            background-position: 50% 80%;
+        }
+        #panel{
+            position: fixed;
+            color: white;
+            top: 0px;
+            left: 0px;
+            position: relative;
+            z-index: 11;
+            width: 250px;
+            height: 250px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .current-image{
+            z-index: 10;
+        }
+    </style>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY&sensor=false"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        var markerArray = [];
+        var currImage = 0;
+        function StreetViewGallery(){
+            var webService = new google.maps.StreetViewService();
+            var imgOptions = {
+                width: 640,
+                height: 640,
+                fov: 90,
+                pitch: 25
+            }
+            var radius = 10;
+            var apiKey = 'AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY';
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            var directionsService = new google.maps.DirectionsService();
+            var panoArray = [];
+            var doneLoading = false;
+            var currentIteration = 0;
+            var googleOverviewPath;
+            var pathZoom;
+            var LIMIT = 20;
+            
+            //Finds directions from pointA to pointB using Google Maps API
+            function calcRoute() {
+                var start = document.getElementById('start').value;
+                var end = document.getElementById('end').value;
+                var request = {
+                    origin: start,
+                    destination: end,
+                    travelMode: google.maps.TravelMode.DRIVING
+                };
+                directionsService.route(request, function(response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        googleOverviewPath = response.routes[0].overview_path;
+                        console.log(response);
+                        directionsDisplay.setMap(googleMap);
+                        directionsDisplay.setDirections(response);
+                        findStreetViews(googleOverviewPath);
+                    }
+                });
+            }
+
+            //On form submit, resets images and variables
+            function resetStreetViews(){
+                document.getElementById('streetview-images').innerHTML = "";
+                currImage = 0;
+                markerArray = [];
+                panoArray = [];
+            }
+
+            //Given an array of points, goes through them and finds panoramic images
+            function findStreetViews(coordinatesArray){
+                resetStreetViews();
+                currentIteration = 0;
+                for (var i = 0; i < (LIMIT<googleOverviewPath.length?LIMIT:googleOverviewPath.length); i++){
+                    findPanorama(coordinatesArray[i]);
+                }
+            }
+            
+            //Finds a single panoramic image
+            function findPanorama(coordinates){
+                webService.getPanoramaByLocation(coordinates, radius, function(result, status){
+                    currentIteration++;
+                    // console.log(result);
+                    panoArray.push(result);
+                    if (currentIteration == (LIMIT<googleOverviewPath.length?LIMIT:googleOverviewPath.length)){
+                        console.log('Iterations complete');
+                        console.log(panoArray);
+                        trimNull();
+                        insertHeadings();
+                        showAllStreetViewHTML();
+                    }
+                });
+            }
+            
+            function trimNull(){
+                for(var i = 0; i<panoArray.length; i++) {
+                    // console.log('trimming...');
+                    // console.log(panoArray[i]);
+                    if(panoArray[i] == null) {
+                        console.log('this is null');
+                        panoArray.splice(i--, 1);
+                    }
+                }
+                console.log('Trim complete');
+                console.log(panoArray);
+            }
+
+            //Calculates heading for every element in panoArray
+            function insertHeadings(){
+                var heading = 0;
+                for (var i = 0; i<panoArray.length; i++){
+                    if (panoArray[i] && panoArray[i+1]) heading = getHeading(panoArray[i], panoArray[i+1]);
+                    panoArray[i].heading = heading;
+                }
+            }
+
+            //Gets heading from pointA to pointB
+            function getHeading(pointA, pointB){
+                return google.maps.geometry.spherical.computeHeading(pointA.location.latLng, pointB.location.latLng);
+            }
+
+            //Generates HTML for street view images from information in panoArray
+            function showAllStreetViewHTML(){
+                console.log('Generating HTML...')
+                console.log(panoArray);
+                for (var i = 0; i<panoArray.length; i++){
+                    var html = streetViewHTML(panoArray[i]);
+                    markerArray.push(createMarker(panoArray[i].location.latLng));
+                    document.getElementById('streetview-images').innerHTML += html;
+                    if (i==0){
+                        document.getElementById('streetview-images').firstChild.className += ' current-image';
+                    }
+                }
+                // console.log(markerArray);
+            }
+
+            function streetViewHTML(coordinates){
+                var src = streetViewImageLink(coordinates);
+                var html = streetViewDiv(src);
+                return html;
+            }
+
+            //Generates HTML for a single street view image
+            function streetViewImageLink(coordinates){
+                var src = "http://maps.googleapis.com/maps/api/streetview?location="+
+                            coordinates.location.latLng.toUrlValue()+
+                            "&heading="+
+                            coordinates.heading+
+                            "&size="+
+                            imgOptions.width+"x"+imgOptions.height+
+                            "&fov="+
+                            imgOptions.fov+
+                            "&pitch="+
+                            imgOptions.pitch+
+                            "&sensor=false&key="+
+                            apiKey;
+                return src;
+            }
+
+            function streetViewDiv(src){
+                var html = '<div class="street-image" style="background-image: url(\''+src+'\');"></div>';
+                return html;
+            }
+
+            //Calls google maps function that creates a marker (not on a map)
+            function createMarker(coordinates){
+                var marker = new google.maps.Marker({
+                    position: coordinates,
+                });
+                return marker;
+            }
+
+            //Call on initialization
+            calcRoute();
+        };
+
+        var googleMap;
+
+        //Initializes Google Maps and Directions
+        function initialize() {
+            directionsDisplay = new google.maps.DirectionsRenderer();
+            var sanFrancisco = new google.maps.LatLng(37.774950000000004, -122.41929);
+            var mapOptions = {
+                zoom: 10,
+                center: sanFrancisco
+            }
+            googleMap = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            directionsDisplay.setMap(googleMap);
+        }
+
+        //initialize the map
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        //Read key input for changing images
+        $( window ).keyup(function(e) {
+            if (e.keyCode == 38 || e.keyCode == 40) {
+                var curr = $(".current-image");
+                //Move up
+                if (e.keyCode==38){
+                    if ( curr.prev().length ){
+                        markerArray[currImage].setMap(null);
+                        currImage--;
+                        markerArray[currImage].setMap(googleMap);
+                        // googleMap.setZoom(12);
+                        // googleMap.setCenter(markerArray[currImage].getPosition());
+                        curr.removeClass("current-image");
+                        curr.prev().addClass("current-image");
+                    } 
+                //Move down
+                } else if (e.keyCode==40){
+                    if ( curr.next().length ){
+                        markerArray[currImage].setMap(null);
+                        currImage++;
+                        markerArray[currImage].setMap(googleMap);
+                        // googleMap.setZoom(12);
+                        // googleMap.setCenter(markerArray[currImage].getPosition());
+                        curr.removeClass("current-image");
+                        curr.next().addClass("current-image");
+                    } 
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="panel">
+            <b>Start: </b>
+            <!-- 1401 Golden Gate Bridge, San Francisco, CA 94129
+            Golden Gate Bridge & El Camino Real, Sausalito, CA 94965 -->
+            <input type="text" id="start" value="grand central terminal">
+            <br>
+            <b>End: </b>
+            <input type="text" id="end" value="empire state building">
+            <br>
+            <input type="button" value="Go" onclick="StreetViewGallery();">
+        <div id="map-canvas"></div>
+    </div>
+    <div class="markers"></div>
+    <div id="streetview-images"></div>
+</body>
+</html>
