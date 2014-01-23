@@ -1,11 +1,12 @@
 //StreetViewGallery
 //-----------------
 // By: Jefferson Lam
-// January 22nd, 2014
+// Updated: January 22nd, 2014
 // Special Thanks To:
+//      Google
 //      CodingDojo : http://codingdojo.com/
 //      Brian Folts : http://www.brianfolts.com/driver/
-//      The Folks behind HyperLapse : 
+//      The Folks behind HyperLapse : http://hyperlapse.tllabs.io/
 
 function StreetViewGallery(divID, imgOptions){
     // console.log('divID:', divID);

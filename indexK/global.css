@@ -1,0 +1,38 @@
+html {
+    height: 100% ;
+    font-family: helvetica;
+}
+body { 
+    height: 100%; 
+    margin: 0; 
+    padding: 0; 
+}
+#map-canvas{
+    height: 250px;
+    width: 250px;
+    background: #e1e1e1;
+    display: inline-block;
+}
+#streetview-images div{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    background-position: 50% 80%;
+}
+#panel{
+    position: fixed;
+    color: white;
+    top: 0px;
+    left: 0px;
+    position: relative;
+    z-index: 11;
+    width: 250px;
+    height: 250px;
+    background: rgba(0, 0, 0, 0.3);
+}
+.current-image{
+    z-index: 10;
+}
