@@ -1,11 +1,52 @@
 html {
     height: 100% ;
-    font-family: helvetica;
+    font-family: "Open Sans";
 }
 body { 
+    position: relative;
     height: 100%; 
     margin: 0; 
     padding: 0; 
+}
+.row{
+    display: block;
+    width: inherit;
+}
+.row label{
+    display: inline-block;
+    width: 50px;
+}
+.row input[type="text"]{
+    height: 18px;
+    line-height: 16px;
+    width: 182px;
+    border: 1px solid #d8d8d8;
+    padding: 0 5px;
+    font-family: "Open Sans";
+}
+
+.submit{
+    text-align: right;
+    padding: 5px 0px;
+}
+
+.submit input{
+    border: none;
+    font-size: 14px;
+    padding: 5px 20px;
+    background-color: #2484C4;
+    color: white;
+}
+
+#panel{
+    position: absolute;
+    color: white;
+    top: 7px;
+    right: 7px;
+    z-index: 11;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
 }
 #map-canvas{
     height: 250px;
@@ -14,25 +55,24 @@ body {
     display: inline-block;
 }
 #streetview-images div{
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-size: cover;
+    /*background-size: cover;*/
+    background-size: 100% 100%;
     background-position: 50% 80%;
-}
-#panel{
-    position: fixed;
-    color: white;
-    top: 0px;
-    left: 0px;
-    position: relative;
-    z-index: 11;
-    width: 250px;
-    height: 250px;
-    background: rgba(0, 0, 0, 0.3);
 }
 .current-image{
     z-index: 10;
 }
+
+/*@media (min-width: 1200px){
+    #streetview-images div{
+        top: 10%;
+        right: 10%;
+        bottom: 10%;
+        left: 10%;
+    }
+}*/

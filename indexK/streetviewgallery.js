@@ -8,7 +8,13 @@
 //      Brian Folts : http://www.brianfolts.com/driver/
 //      The Folks behind HyperLapse : http://hyperlapse.tllabs.io/
 
-
+//TODO: Remove duplicate street views before calculating headings
+//TODO: Segment entire route into equidistant segments, and grab an image
+//      from each segment, rather than grabbing all images at the start
+//      of the route.
+//TODO: Show loading screen before displaying streetviews and reading input
+//TODO: Set first pointer upon load
+//TODO: Remove current pointer upon searching again
 function StreetViewGallery(divID, imgOptions){
     this.divID = divID;
     this.imgOptions = imgOptions;
@@ -171,8 +177,11 @@ function StreetViewGallery(divID, imgOptions){
     function resetStreetViews(){
         document.getElementById(divID).innerHTML = "";
         directionsDisplay.setMap(null);
-        currImage = 0;
+        for (var i = 0; i<markerArray.length; i++){
+            markerArray[i].setMap(null);
+        }
         markerArray = [];
+        currImage = 0;
     }
 
     //Removes marker of specified index from map

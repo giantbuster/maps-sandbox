@@ -1,3 +1,4 @@
+
 //initialize the map
 var googleMap;
 google.maps.event.addDomListener(window, 'load', initializeMap);
@@ -21,10 +22,12 @@ function initializeStreetViewGallery(){
 //Initializes Google Maps and Directions
 function initializeMap() {
     var directionsDisplay = new google.maps.DirectionsRenderer();
-    var sanFrancisco = new google.maps.LatLng(37.774950000000004, -122.41929);
+    // var sanFrancisco = new google.maps.LatLng(37.774950000000004, -122.41929);
+    var manhattan = new google.maps.LatLng(40.756319,-73.98468);
     var mapOptions = {
-        zoom: 10,
-        center: sanFrancisco
+        zoom: 11,
+        center: manhattan,
+        streetViewControl: false
     }
     googleMap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     directionsDisplay.setMap(googleMap);

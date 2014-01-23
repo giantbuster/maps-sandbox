@@ -10,14 +10,22 @@
 </head>
 <body>
     <div id="panel">
-        <b>Start: </b>
-        <input type="text" id="start" value="grand central terminal">
-        <br>
-        <b>End: </b>
-        <input type="text" id="end" value="empire state building">
-        <br>
-        <input type="button" value="Go" onclick="calcRoute();">
-        <div id="map-canvas"></div>
+        <form action="javascript:calcRoute()">
+            <div class="row">
+                <label>Start: </label>
+                <input type="text" id="start" value="Grand Central Terminal">
+            </div>
+            <div class="row">
+                <label>End: </label>
+                <input type="text" id="end" value="Empire State Building">
+            </div>
+            <div class="row submit">
+                <input type="submit" value="Go">
+            </div>
+        </form>
+        <div class="map-container">
+            <div id="map-canvas"></div>
+        </div>
     </div>
     <div id="streetview-images"></div>
 </body>
