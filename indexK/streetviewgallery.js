@@ -8,10 +8,12 @@
 //      Brian Folts : http://www.brianfolts.com/driver/
 //      The Folks behind HyperLapse : http://hyperlapse.tllabs.io/
 
+
 function StreetViewGallery(divID, imgOptions){
-    // console.log('divID:', divID);
     this.divID = divID;
     this.imgOptions = imgOptions;
+    var markerArray = [];
+    var currImage = 0;
     var webService = new google.maps.StreetViewService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var directionsService = new google.maps.DirectionsService();
@@ -167,9 +169,32 @@ function StreetViewGallery(divID, imgOptions){
 
     //On form submit, resets images and variables
     function resetStreetViews(){
-        document.getElementById('streetview-images').innerHTML = "";
+        document.getElementById(divID).innerHTML = "";
         directionsDisplay.setMap(null);
         currImage = 0;
         markerArray = [];
+    }
+
+    //Removes marker of specified index from map
+    this.removeMarker = function(index){
+        markerArray[index].setMap(null);
+    }
+
+    //Inserts marker of specified index into specified map
+    this.setMarker = function(index, map){
+        markerArray[index].setMap(map);
+    }
+
+    //Returns value of current displayed image
+    this.currIndex = function(){
+        return currImage;
+    }
+
+    this.decIndex = function(){
+        currImage--;
+    }
+
+    this.incIndex = function(){
+        currImage++;
     }
 };
