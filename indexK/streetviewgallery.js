@@ -1,7 +1,7 @@
 //StreetViewGallery
 //-----------------
 // By: Jefferson Lam
-// Updated: January 22nd, 2014
+// Updated: January 24nd, 2014
 // Special Thanks To:
 //      Google
 //      CodingDojo : http://codingdojo.com/
