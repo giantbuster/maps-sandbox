@@ -8,6 +8,7 @@
 //      Brian Folts : http://www.brianfolts.com/driver/
 //      The Folks behind HyperLapse : http://hyperlapse.tllabs.io/
 
+//TODO: Add scrolling functionality for viewing images
 //TODO: Remove duplicate street views before calculating headings
 //TODO: Segment entire route into equidistant segments, and grab an image
 //      from each segment, rather than grabbing all images at the start
@@ -24,7 +25,7 @@ function StreetViewGallery(divID, imgOptions){
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var directionsService = new google.maps.DirectionsService();
     var RADIUS = 10;
-    var LIMIT = 100;
+    var LIMIT = 25;
 
     //findRoute(origin, destination)
     //------------------------------
@@ -184,14 +185,18 @@ function StreetViewGallery(divID, imgOptions){
         currImage = 0;
     }
 
+    this.numImages = function(){
+        return markerArray.length;
+    }
+
     //Removes marker of specified index from map
     this.removeMarker = function(index){
-        markerArray[index].setMap(null);
+        if (markerArray[index]) markerArray[index].setMap(null);
     }
 
     //Inserts marker of specified index into specified map
     this.setMarker = function(index, map){
-        markerArray[index].setMap(map);
+        if (markerArray[index]) markerArray[index].setMap(map);
     }
 
     //Returns value of current displayed image

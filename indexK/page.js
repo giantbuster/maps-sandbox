@@ -33,29 +33,33 @@ function initializeMap() {
     directionsDisplay.setMap(googleMap);
 }
 
+var sensitivity = 250;
+var displayedImage = 0;
+
 //Read key input for changing images
-$( window ).keyup(function(e) {
-    if (e.keyCode == 38 || e.keyCode == 40) {
-        var curr = $(".current-image");
-        //Move up
-        if (e.keyCode==38){
-            if ( curr.prev().length ){
-                streetVG.removeMarker(streetVG.currIndex());
-                streetVG.decIndex();
-                streetVG.setMarker(streetVG.currIndex(), googleMap);
-                curr.removeClass("current-image");
-                curr.prev().addClass("current-image");
-            } 
-        //Move down
-        } else if (e.keyCode==40){
-            if ( curr.next().length ){
-                streetVG.removeMarker(streetVG.currIndex());
-                streetVG.incIndex();
-                streetVG.setMarker(streetVG.currIndex(), googleMap);
-                curr.removeClass("current-image");
-                curr.next().addClass("current-image");
-            } 
-        }
+$(window).scroll(function(){
+    //Set height
+    var numImages = streetVG.numImages();
+    var height = $(window).height() + (numImages * sensitivity);
+    $('#container').css("height", height);
+
+    //Calculate distance from top
+    var distance = $(document).scrollTop();
+    var containerHeight = $('#container').css("height");
+
+    //Find image for current distance
+    var currImage = Math.floor(distance/sensitivity) + 1;
+    if (currImage<1) currImage = 1;
+    if (currImage>numImages) currImage=numImages;
+    
+
+    //Update current image
+    if (currImage != displayedImage){
+        $( "#streetview-images > div").removeClass("current-image");
+        $( "#streetview-images > div:nth-child("+currImage+")" ).addClass("current-image");
+        streetVG.removeMarker(displayedImage-1);
+        streetVG.setMarker(currImage-1, googleMap);
+        displayedImage = currImage;
     }
 });
 
