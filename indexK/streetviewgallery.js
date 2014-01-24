@@ -1,12 +1,5 @@
-//StreetViewGallery
-//-----------------
-// By: Jefferson Lam
-// Updated: January 24nd, 2014
-// Special Thanks To:
-//      Google
-//      CodingDojo : http://codingdojo.com/
-//      Brian Folts : http://www.brianfolts.com/driver/
-//      The Folks behind HyperLapse : http://hyperlapse.tllabs.io/
+//Tasks
+//=====
 
 //DONE: Add scrolling functionality for viewing images
 //DONE: Remove current pointer upon searching again
