@@ -7,9 +7,7 @@ body {
     height: 100%; 
     margin: 0; 
     padding: 0; 
-}
-#container{
-    /*height: 1000px;*/
+    overflow-y: hidden;
 }
 .row{
     display: block;
@@ -27,12 +25,10 @@ body {
     padding: 0 5px;
     font-family: "Open Sans";
 }
-
 .submit{
     text-align: right;
     padding: 5px 0px;
 }
-
 .submit input{
     border: none;
     font-size: 14px;
@@ -40,16 +36,44 @@ body {
     background-color: #2484C4;
     color: white;
 }
-
-#panel{
+.panel-with-tab{
     position: fixed;
-    color: white;
+    top: 0px;
+    right: 15px;
+    z-index: 15;
+}
+.panel-with-tab #panel{
+    position: relative;
     top: 0px;
     right: 0px;
+    color: white;
     z-index: 11;
     width: 250px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     padding: 10px;
+}
+.panel-with-tab .slider-tab .peekbar{
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 0px 0px 5px 5px;
+    width: 270px;
+    height: 10px;
+}
+.panel-with-tab .slider-tab .tab{
+    height: 16px;
+    width: 50px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 0px 0px 5px 5px;
+    margin-left: 200px;
+    text-align: center;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: normal;
+    font-size: 7pt;
+    cursor: pointer;
+    font-family: 'verdana';
+}
+.panel-with-tab .slider-tab .tab:hover{
+    background: rgba(50, 50, 50, 0.7);
 }
 #map-canvas{
     height: 250px;
@@ -63,19 +87,46 @@ body {
     right: 0;
     bottom: 0;
     left: 0;
-    /*background-size: cover;*/
-    background-size: 100% 100%;
+    background-size: cover;
+    /*background-size: 100% 100%;*/
     background-position: 50% 80%;
 }
 .current-image{
     z-index: 10;
 }
+#progressbar{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 18px 20px 18px 20px;
+    z-index: 15;
+}
+#progressbar .line-visible{
+    position: relative;
+    background: rgba(255, 255, 255, 0.4);
+    height: 2px;
+    margin-left: 7px;
+    margin-right: 51px;
+}
+#progressbar .actual-line{
+    position: relative;
+    height: 0px;
+    margin-right: 60px; /* Parent padding * 2 + icon-width */
+}
+#progressbar .actual-line .circle{
+    position: absolute;
+    /*top: -9px;   icon-height/2 + lineheight 
+    left: 0%;  Adjust with JavaScript 
+    border-radius: 5px;
+    background-color: #2488E1;
+    height: 15px;
+    width: 15px;*/
 
-/*@media (min-width: 1200px){
-    #streetview-images div{
-        top: 10%;
-        right: 10%;
-        bottom: 10%;
-        left: 10%;
-    }
-}*/
+    top: -14px;
+    border-top: 12px solid #2488E1;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    width: 0px;
+    height: 0px;
+}

@@ -8,14 +8,21 @@
 //      Brian Folts : http://www.brianfolts.com/driver/
 //      The Folks behind HyperLapse : http://hyperlapse.tllabs.io/
 
-//TODO: Add scrolling functionality for viewing images
-//TODO: Remove duplicate street views before calculating headings
-//TODO: Segment entire route into equidistant segments, and grab an image
-//      from each segment, rather than grabbing all images at the start
-//      of the route.
-//TODO: Show loading screen before displaying streetviews and reading input
-//TODO: Set first pointer upon load
-//TODO: Remove current pointer upon searching again
+//DONE: Add scrolling functionality for viewing images
+//DONE: Remove current pointer upon searching again
+//DONE: Functional progress bar
+
+//FRONT-END:
+    //TODO: Make it possible to click and slide progress bar to move between images
+    //TODO: Show loading screen before displaying streetviews and reading input
+
+//BACK-END:
+    //TODO: Remove duplicate street views before calculating headings
+    //TODO: Segment entire route into equidistant segments, and grab an image
+    //      from each segment, rather than grabbing all images at the start
+    //      of the route.
+    //TODO: Set first pointer upon load
+
 function StreetViewGallery(divID, imgOptions){
     this.divID = divID;
     this.imgOptions = imgOptions;
@@ -25,7 +32,7 @@ function StreetViewGallery(divID, imgOptions){
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var directionsService = new google.maps.DirectionsService();
     var RADIUS = 10;
-    var LIMIT = 25;
+    var LIMIT = 100;
 
     //findRoute(origin, destination)
     //------------------------------

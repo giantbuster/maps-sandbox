@@ -10,25 +10,38 @@
 </head>
 <body>
 <div id="container">
-    <div id="panel">
-        <form action="javascript:calcRoute()">
-            <div class="row">
-                <label>Start: </label>
-                <input type="text" id="start" value="Grand Central Terminal">
+    <div class="panel-with-tab">
+        <div id="panel">
+            <form action="javascript:calcRoute()">
+                <div class="row">
+                    <label>Start: </label>
+                    <input type="text" id="start" value="Grand Central Terminal">
+                </div>
+                <div class="row">
+                    <label>End: </label>
+                    <input type="text" id="end" value="Empire State Building">
+                </div>
+                <div class="row submit">
+                    <input type="submit" value="Go">
+                </div>
+            </form>
+            <div class="map-container">
+                <div id="map-canvas"></div>
             </div>
-            <div class="row">
-                <label>End: </label>
-                <input type="text" id="end" value="Empire State Building">
-            </div>
-            <div class="row submit">
-                <input type="submit" value="Go">
-            </div>
-        </form>
-        <div class="map-container">
-            <div id="map-canvas"></div>
+        </div>
+        <div class="slider-tab">
+            <div class="peekbar"></div>
+            <div class="tab">v</div>
         </div>
     </div>
+    
     <div id="streetview-images"></div>
+    <div id="progressbar">
+        <div class="line-visible"></div>
+        <div class="actual-line">
+            <div class="circle"></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
