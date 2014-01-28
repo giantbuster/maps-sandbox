@@ -9,6 +9,7 @@ body {
     margin: 0; 
     padding: 0; 
     overflow-y: hidden;
+    background: gray;
 }
 #container{
     height: auto;
@@ -18,11 +19,12 @@ body {
     font-size: 32pt;
     height: 100%;
     width: 100%;
-    margin-top: 40%;
+    /*margin-top: 40%;*/
     text-align: center;
     visibility: hidden;
     z-index: 15;
-    background: white;
+    /*background: white;*/
+    color: white;
 }
 .row{
     display: block;

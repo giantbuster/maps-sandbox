@@ -47,6 +47,15 @@ function handleSubmit(){
     calcRoute();
 }
 
+function sendSVPArray(){
+    console.log('Retrieving SVP Array...');
+    var tmp = streetVG.returnArray();
+    console.log('tmp', tmp);
+    for (var i = 0; i<tmp.length;i++){
+        console.log(tmp[i].src);
+    }
+}
+
 function updatePage(svpArray){
     setPageHeight(svpArray.length);
     imageHandler.displayImages(svpArray);

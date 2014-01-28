@@ -109,7 +109,14 @@ function StreetViewGrabber(imgOptions){
         trimNull(pArray);
         removeRepeats(pArray);
         createStreetViewPoints(pArray);
+        
+        //global function
+        // sendSVPArray();
         updatePage(svpArray);
+    }
+
+    this.returnArray = function(){
+        return svpArray;
     }
 
     function createStreetViewPoints(pArray){
