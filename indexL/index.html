@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY&sensor=false"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="streetviewgrabber.js"></script>
+    <script type="text/javascript" src="streetviewpoint.js"></script>
+    <script type="text/javascript" src="htmlhelper.js"></script>
+    <script type="text/javascript" src="scroller.js"></script>
+    <script type="text/javascript" src="page.js"></script>
+    <link rel="stylesheet" type="text/css" href="global.css">
+</head>
+<body>
+<div id="container">
+    <div class="panel-with-tab">
+        <div class="slider-tab">
+            <div class="tab"> < </div>
+        </div>
+        <div id="panel">
+            <form action="javascript:handleSubmit()">
+                <div class="row">
+                    <label>Start: </label>
+                    <input type="text" id="start" value="Grand Central Terminal">
+                </div>
+                <div class="row">
+                    <label>End: </label>
+                    <input type="text" id="end" value="Empire State Building">
+                </div>
+                <div class="row submit">
+                    <input type="submit" value="Go">
+                </div>
+            </form>
+            <div class="map-container">
+                <div id="map-canvas"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="streetview-images"></div>
+    <div id="test"></div>
+    <!-- <div id="test" style="position: absolute; left:25%; top: 25%; z-index: 15; background: rgba(0,0,0,0.5); color:white; text-align:center; padding:5px;">
+        <p>Scroll</p>
+        <p>v</p>
+        <p>v</p>
+        <p>v</p>
+    </div> -->
+    <div id="progressbar">
+        <div class="line-visible"></div>
+        <div class="actual-line">
+            <div class="tracker"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
