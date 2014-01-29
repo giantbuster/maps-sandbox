@@ -1,0 +1,154 @@
+html {
+    height: 100% ;
+    font-family: "Open Sans";
+}
+body { 
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin: 0; 
+    padding: 0; 
+    overflow-y: hidden;
+    background: gray;
+}
+#container{
+    height: auto;
+    width: auto;
+}
+#loading{
+    font-size: 32pt;
+    height: 100%;
+    width: 100%;
+    /*margin-top: 40%;*/
+    text-align: center;
+    visibility: hidden;
+    z-index: 15;
+    /*background: white;*/
+    color: white;
+}
+.row{
+    display: block;
+    width: inherit;
+}
+.row label{
+    display: inline-block;
+    width: 50px;
+}
+.row input[type="text"]{
+    height: 18px;
+    line-height: 16px;
+    width: 182px;
+    border: 1px solid #d8d8d8;
+    padding: 0 5px;
+    font-family: "Open Sans";
+}
+.submit{
+    text-align: right;
+    padding: 5px 0px;
+}
+.submit input{
+    border: none;
+    font-size: 14px;
+    padding: 5px 20px;
+    background-color: #2484C4;
+    color: white;
+}
+.panel-with-tab{
+    position: fixed;
+    top: 5px;
+    right: 0px;
+    z-index: 15;
+}
+.panel-with-tab #panel{
+    position: relative;
+    top: 0px;
+    right: 0px;
+    color: white;
+    z-index: 11;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    display: inline-block;
+    border-radius: 5px 0px 0px 5px;
+}
+
+.panel-with-tab .slider-tab{
+    display: inline-block;
+    position: absolute;
+    left: -20px;
+    top: 10px;
+}
+.panel-with-tab .slider-tab .peekbar{
+    background: rgba(0, 0, 0, 0.7);
+    /*border-radius: 0px 0px 5px 5px;*/
+    height: 366px;
+    width: 10px;
+    display: inline-block;
+}
+.panel-with-tab .slider-tab .tab{
+    padding: 14px 2px 17px 2px;
+    width: 16px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px 0px 0px 5px;
+    text-align: center;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: normal;
+    font-size: 7pt;
+    cursor: pointer;
+    font-family: 'verdana';
+    display: inline-block;
+}
+.panel-with-tab .slider-tab .tab:hover{
+    background: rgba(50, 50, 50, 0.7);
+}
+#map-canvas{
+    height: 250px;
+    width: 250px;
+    background: #e1e1e1;
+    display: inline-block;
+}
+#streetview-images img{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*background-size: cover;
+    background-position: 50% 80%;*/
+}
+
+.current-image{
+    z-index: 10;
+}
+#progressbar{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 16px 0px 0px 10px;
+    z-index: 15;
+}
+#progressbar .line-visible{
+    position: relative;
+    background: rgba(255, 255, 255, 0.4);
+    height: 2px;
+    margin-left: 7px; /* trackerwidth/2 */
+    margin-right: 27px; /* parentpadding * 2 + trackerwidth/2 - 1*/
+}
+#progressbar .actual-line{
+    position: relative;
+    height: 0px;
+    margin-right: 36px; /* Parentpadding * 2 + trackerwidth */
+}
+#progressbar .actual-line .tracker{
+    position: absolute;
+    top: -14px; /* -(trackerheight + 2) */
+    border-top: 12px solid #2499E1;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    width: 0px;
+    height: 0px;
+}
