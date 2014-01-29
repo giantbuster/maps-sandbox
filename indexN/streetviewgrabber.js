@@ -9,26 +9,13 @@
 function StreetViewGrabber(imgOptions){
     //imgOptions are the image options for generating the URL.
     //Requires width, height, fov, pitch, and key
-    //TODO: Move to HTML helper
     this.imgOptions = imgOptions;
 
-    //Used in webService when searching for panoramic images.
     var RADIUS = 10;
-    
-    //Used to limit API calls.
-    //Will be left on 100 once equidistant route segmenting is implemented.
     var LIMIT = 5;
-
-    //Searches for directions between two points
     var directionsService = new google.maps.DirectionsService();
-
-    //Displays the route between two points
     var directionsDisplay = new google.maps.DirectionsRenderer();
-
-    //Used for finding a panorama near a given point
     var webService = new google.maps.StreetViewService();
-    
-    //Array of StreetViewPoints, which contain a streetview's URL and marker
     var svpArray = [];
 
     //findRoute(origin, destination)
@@ -79,7 +66,7 @@ function StreetViewGrabber(imgOptions){
         for (var i = 0; i < (paLength > LIMIT ? LIMIT : paLength); i++){
             findPanorama(pointsArray[i], i, paLength, panoArray, currentIteration);
         }
-
+        
         //findPanorama()
         //==============
         //Find a single panoramic image at a point, and puts it into the specified index.
@@ -89,11 +76,6 @@ function StreetViewGrabber(imgOptions){
                 console.log('index', index);
                 currentIteration++;
                 panoArray[index] = result;
-
-                //Conditional to check if we move on can only be done in here
-                //by incrementing currentIteration until it matches
-                //the limit, or the length of routes[0].overview_path
-                //If we're on the last iteration, parse the entire array
                 if (currentIteration == (paLength > LIMIT ? LIMIT : paLength)){
                     parsePanoramaArray(panoArray);
                 }
@@ -170,14 +152,6 @@ function StreetViewGrabber(imgOptions){
         }
     }
 
-    //getStreetViewArray()
-    //====================
-    //Public function which returns the street view array.
-    //Used in HTML helper once the array is populated with needed information
-    //NOT IMPLEMENTED
-    // this.getStreetViewArray = function(){
-    //     return svpArray;
-    // }
 
     //========================================
     //----------------------------------------
