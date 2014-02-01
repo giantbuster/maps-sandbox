@@ -2,7 +2,7 @@
 //Creates all needed JavaScript objects
 
 //initialize the map
-var googleMap;
+var searchMap;
 google.maps.event.addDomListener(window, 'load', initializeMap);
 
 //initialize the street view grabber
@@ -34,17 +34,21 @@ function initializeMap() {
         center: manhattan,
         streetViewControl: false
     }
-    googleMap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    directionsDisplay.setMap(googleMap);
+    searchMap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    directionsDisplay.setMap(searchMap);
 }
 
-function calcRoute(){
-    streetVG.findRoute(document.getElementById('start').value, 
-                       document.getElementById('end').value);
+function handleRouteSearch(){
+    $("#searching-route").css('visibility', 'visible');
+    $("#searching-route").html('<span>Finding route...</span>');
+
+    setTimeout(function(){
+        streetVG.findRoute(document.getElementById('start').value, document.getElementById('end').value);
+        }, 250);
 }
 
-function handleSubmit(){
-    calcRoute();
+function handleStreetViewSearch(){
+    streetVG.findStreetViews();
 }
 
 function retrieveSVPArray(){

@@ -7,7 +7,7 @@
 //the latLng and appropriate heading.
 
 function StreetViewGrabber(imgOptions){
-    //imgOptions are the image options for generating the URL.
+    //imgOptions are the image options for generating image URLs.
     //Requires width, height, fov, pitch, and key
     this.imgOptions = imgOptions;
 
@@ -17,6 +17,7 @@ function StreetViewGrabber(imgOptions){
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var webService = new google.maps.StreetViewService();
     var svpArray = [];
+    var path;
 
     //findRoute(origin, destination)
     //==============================
@@ -31,16 +32,27 @@ function StreetViewGrabber(imgOptions){
             destination: end,
             travelMode: google.maps.TravelMode.DRIVING
         };
+        directionsDisplay.setMap(null);
         directionsService.route(request, function(response, status) {
             if (status == google.maps.DirectionsStatus.OK) {
-                console.log('Directions response: ');
                 console.log(response);
-                resetStreetViews();
-                directionsDisplay.setMap(googleMap);
+                directionsDisplay.setMap(searchMap);
                 directionsDisplay.setDirections(response);
-                findStreetViews(response.routes[0].overview_path);
+                path = response.routes[0].overview_path;
+                $("#searching-route").html("<span>Route found</span>");
+                $("#street-view-button").prop('disabled', false);
+            } else {
+                $("#searching-route").html("<span>No route found</span>");
+                $("#street-view-button").prop('disabled', true);
             }
         });
+    }
+
+    this.findStreetViews = function(){
+        resetStreetViews();
+        $("#searching-route").css('visibility', 'hidden');
+        $("#loading-images").css('visibility', 'visible');
+        findStreetViews(path);
     }
 
     //resetStreetViews()
@@ -52,8 +64,6 @@ function StreetViewGrabber(imgOptions){
             svpArray[i].marker.setMap(null);
         }
         svpArray = [];
-        $("#loading").css('visibility', 'visible');
-        directionsDisplay.setMap(null);
     }
 
     //findStreetViews()
@@ -93,12 +103,7 @@ function StreetViewGrabber(imgOptions){
         createStreetViewPoints(pArray);
         
         //global function
-        // retrieveSVPArray();
         updatePage(svpArray);
-    }
-
-    this.returnArray = function(){
-        return svpArray;
     }
 
     function createStreetViewPoints(pArray){
@@ -155,7 +160,7 @@ function StreetViewGrabber(imgOptions){
 
     //========================================
     //----------------------------------------
-    //Everything in the block below should be in the HTML helper (or some other class)
+    //Public functions for controlling image gallery
     //----------------------------------------
     //========================================
 

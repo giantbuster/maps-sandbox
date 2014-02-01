@@ -87,6 +87,6 @@ $(document).ready(function() {
         //streetVG is 0-indexed, so we used -1 to fix this misalignment
         // console.log('currImg', currImg, ' displayedImg', displayedImg);
         streetVG.removeMarker(displayedImg-1);
-        streetVG.displayMarker(currImg-1, googleMap);
+        streetVG.displayMarker(currImg-1, searchMap);
     }
 });

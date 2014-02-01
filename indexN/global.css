@@ -15,7 +15,17 @@ body {
     height: auto;
     width: auto;
 }
-#loading{
+#searching-route{
+    visibility: hidden;
+    text-align: center;
+    font-size: 14pt;
+    color: gray;
+    vertical-align: middle;
+    line-height: 25px;
+    padding: 5px 0px;
+}
+
+#loading-images{
     font-size: 32pt;
     height: 100%;
     width: 100%;
@@ -44,7 +54,7 @@ body {
 }
 .submit{
     text-align: right;
-    padding: 5px 0px;
+    padding: 5px 0px 0px 0px;
 }
 .submit input{
     border: none;
@@ -52,6 +62,13 @@ body {
     padding: 5px 20px;
     background-color: #2484C4;
     color: white;
+}
+#street-view-button{
+    background-color: #2499C4;
+}
+#street-view-button:disabled{
+    background-color: gray;
+    opacity: 0.25;
 }
 .panel-with-tab{
     position: fixed;

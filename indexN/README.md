@@ -16,15 +16,20 @@ Special Thanks To:
 //DONE: Add scrolling functionality for viewing images
 //DONE: Remove current pointer upon searching again
 //DONE: Functional progress bar
+//DONE: Show loading message after searching for route
+//DONE: Show loading screen before displaying streetviews and reading input
+//DONE: Split up finding route/find street views buttons
+
+//DONE: Remove duplicate street views before calculating headings
+
 
 //FRONT-END:
     //TODO: Make it possible to click and slide progress bar to move between images
-    //TODO: Show loading screen before displaying streetviews and reading input
+    //TODO: Two maps: A big map for searching routes, and a minimap for showing current image location.
 
 //BACK-END:
-    //TODO: Remove duplicate street views before calculating headings
-    //TODO: Segment entire route into equidistant segments, and grab an image
-    //      from each segment, rather than grabbing all images at the start
-    //      of the route.
+    //TODO: Put everything back into streetviewgrabber.js, rather than being dispersed everywhere.
+    //TODO: Segment entire route into equidistant segments, and grab an image from each 
+    //      segment, rather than grabbing all images at the start of the route.
     //TODO: Set first pointer upon load
     //TODO: Clean up code. OOP-ify stuff. Less free-floating functions that kinda grab everything from everywhere.

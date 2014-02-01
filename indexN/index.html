@@ -18,7 +18,7 @@
             <div class="tab"> < </div>
         </div>
         <div id="panel">
-            <form action="javascript:handleSubmit()">
+            <form action="javascript:handleRouteSearch()">
                 <div class="row">
                     <label>Start: </label>
                     <input type="text" id="start" value="Grand Central Terminal">
@@ -28,22 +28,22 @@
                     <input type="text" id="end" value="Empire State Building">
                 </div>
                 <div class="row submit">
-                    <input type="submit" value="Search">
+                    <input type="submit" value="Find Route">
                 </div>
             </form>
+            <div id="searching-route"><span></span></div>
             <div class="map-container">
                 <div id="map-canvas"></div>
             </div>
+            <form action="javascript:handleStreetViewSearch()">
+                <div class="row submit">
+                    <input id="street-view-button" type="submit" value="Find Street Views" disabled>
+                </div>
+            </form>
         </div>
     </div>
-    <div id="loading"><p>loading...</p></div>
+    <div id="loading-images"><p>Loading images...</p></div>
     <div id="streetview-images"></div>
-    <!-- <div id="test" style="position: absolute; left:25%; top: 25%; z-index: 15; background: rgba(0,0,0,0.5); color:white; text-align:center; padding:5px;">
-        <p>Scroll</p>
-        <p>v</p>
-        <p>v</p>
-        <p>v</p>
-    </div> -->
     <div id="progressbar">
         <div class="line-visible"></div>
         <div class="actual-line">

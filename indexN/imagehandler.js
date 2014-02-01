@@ -6,15 +6,14 @@
 //=================
 // Generates and displays HTML for an array of StreetViewPoints
 // ----------
-// REQUIRED PARAMETERS
-//      divID: String of HTML id where the images will be displayed
+// REQUIRED PARAMETERS ON CONSTRUCTION
+//      divID : string : HTML id where the images will be displayed
 // ----------
 // USAGE
 //      var imageHandler = new imageHandler('streetview-images');
 //      imageHandler.displayHTML(svpArray);
 // ----------
 
-//NOT IMPLEMENTED
 function imageHandler(divID){
     this.divID = divID;
 
@@ -43,6 +42,7 @@ function imageHandler(divID){
         for (var i = 0; i < imgArray.length; i++){
             document.getElementById(divID).innerHTML += imgArray[i];
         }
+        document.getElementById(divID).firstChild.className += " current-image"
 
         var imgs = $("#"+divID+" > img").not(function() { return this.complete; });
         var count = imgs.length;
@@ -67,11 +67,11 @@ function imageHandler(divID){
     }
 
     function displayLoadingScreen(){
-        $("#loading").css('visibility', 'visible');
+        $("#loading-images").css('visibility', 'visible');
     }
 
     function hideLoadingScreen(){
-        $("#loading").css('visibility', 'hidden');
+        $("#loading-images").css('visibility', 'hidden');
     }
 
     function showImages(){
