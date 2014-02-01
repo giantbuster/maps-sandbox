@@ -6,10 +6,11 @@
 //If route is found, it will create an array of objects, containing
 //the latLng and appropriate heading.
 
-function StreetViewGrabber(imgOptions){
+function StreetViewGrabber(imgOptions, divID){
     //imgOptions are the image options for generating image URLs.
     //Requires width, height, fov, pitch, and key
     this.imgOptions = imgOptions;
+    this.divID = divID;
 
     var RADIUS = 10;
     var LIMIT = 5;
@@ -33,32 +34,39 @@ function StreetViewGrabber(imgOptions){
             travelMode: google.maps.TravelMode.DRIVING
         };
         directionsDisplay.setMap(null);
-        directionsService.route(request, function(response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                console.log(response);
-                directionsDisplay.setMap(searchMap);
-                directionsDisplay.setDirections(response);
-                path = response.routes[0].overview_path;
-                $("#searching-route").html("<span>Route found</span>");
-                $("#street-view-button").prop('disabled', false);
-            } else {
-                $("#searching-route").html("<span>No route found</span>");
-                $("#street-view-button").prop('disabled', true);
-            }
-        });
+        setSearchingRouteVisibility(true);
+        setSearchingRouteMsg('Finding route...');
+        setTimeout(function(){
+            directionsService.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    console.log(response);
+                    directionsDisplay.setMap(searchMap);
+                    directionsDisplay.setDirections(response);
+                    path = response.routes[0].overview_path;
+                    setSearchingRouteMsg('Route found');
+                    setSVButtonDisabled(false);
+                } else {
+                    setSearchingRouteMsg('No route found');
+                    setSVButtonDisabled(true);
+                }
+            });
+        }, 250);
     }
 
     this.findStreetViews = function(){
+        //front-end
+        setSearchingRouteVisibility(false);
+        setLoadingScreenVisibility(true);
+        setSVButtonDisabled(true);
+
+        //back-end
         resetStreetViews();
-        $("#searching-route").css('visibility', 'hidden');
-        $("#loading-images").css('visibility', 'visible');
         findStreetViews(path);
     }
 
     //resetStreetViews()
     //==================
     //On form submit, resets images and variables
-    //TODO: Needs to be rewritten after code is more modularized.
     function resetStreetViews(){
         for (var i = 0; i < svpArray.length; i++) {
             svpArray[i].marker.setMap(null);
@@ -100,21 +108,23 @@ function StreetViewGrabber(imgOptions){
     function parsePanoramaArray(pArray){
         trimNull(pArray);
         removeRepeats(pArray);
-        createStreetViewPoints(pArray);
+        svpArray = createStreetViewPoints(pArray);
         
-        //global function
-        updatePage(svpArray);
+        setPageHeight(svpArray.length);
+        displayImages(svpArray);
     }
 
     function createStreetViewPoints(pArray){
+        var tmpArray = [];
         var heading = 0;
         for (var i = 0; i<pArray.length; i++){
             var latLng = pArray[i].location.latLng;
             //If we're not on the last element, calculate new heading
             if (pArray[i+1] != undefined) heading = getHeading(pArray[i], pArray[i+1]);
             var svp = new StreetViewPoint(latLng, heading, imgOptions);
-            svpArray[i] = svp;
+            tmpArray[i] = svp;
         }
+        return tmpArray;
     }
 
     //trimNull()
@@ -163,6 +173,83 @@ function StreetViewGrabber(imgOptions){
     //Public functions for controlling image gallery
     //----------------------------------------
     //========================================
+
+    function displayImages(svpArray){
+        clearImages();
+        var imgArray = buildImgTags(svpArray);
+        loadImages(imgArray);
+    }
+
+    function clearImages(){
+        document.getElementById(divID).innerHTML = "";
+    }
+
+    function buildImgTags(svpArray){
+        var imgArray = [];
+        for (var i = 0; i<svpArray.length; i++){
+            var img = '<img class="streetview" src="'+svpArray[i].src+'"/>';
+            imgArray[i] = img;
+        }
+        return imgArray;
+    }
+
+    function loadImages(imgArray){
+        setImagesVisibility(false);
+        
+        //put the img tags onto the page
+        for (var i = 0; i < imgArray.length; i++){
+            document.getElementById(divID).innerHTML += imgArray[i];
+        }
+        document.getElementById(divID).firstChild.className += " current-image"
+
+        var imgs = $("#"+divID+" > img").not(function() { return this.complete; });
+        var count = imgs.length;
+
+        //Check if any images need to be loaded
+        if (count) {
+            //Wait for them to load
+            console.log('Loading...');
+            imgs.load(function() {
+                count--;
+                if (!count) {
+                    console.log('Done loading!');
+                    setLoadingScreenVisibility(false);
+                    setImagesVisibility(true);
+                }
+            });
+        //If count is 0 to begin with, all images were already done loading
+        } else {
+            console.log('No loading needed');
+            setImagesVisibility(true)
+        }
+    }
+
+    function setPageHeight(numImages){
+        pageHeight = window.innerHeight + (numImages * sensitivity) - 1;
+        document.getElementById('container').style.height = pageHeight+"px";
+    }
+
+    function setSearchingRouteVisibility(bool){
+        $("#searching-route").css('visibility', bool ? 'visible' : 'hidden');
+    }
+
+    function setSearchingRouteMsg(msg){
+        $("#searching-route").html('<span>'+msg+'</span>');
+    }
+
+    function setLoadingScreenVisibility(bool){
+        $("#loading-images").css('visibility', bool ? 'visible' : 'hidden');
+    }
+
+    function setImagesVisibility(bool){
+        $("#"+divID).css('visibility', bool ? 'visible' : 'hidden');
+    }
+
+    function setSVButtonDisabled(bool){
+        $("#street-view-button").prop('disabled', bool);
+    }
+
+    
 
     //numImages()
     //===========

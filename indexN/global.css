@@ -119,7 +119,14 @@ body {
 .panel-with-tab .slider-tab .tab:hover{
     background: rgba(50, 50, 50, 0.7);
 }
-#map-canvas{
+#search-map{
+    height: 250px;
+    width: 250px;
+    background: #e1e1e1;
+    display: inline-block;
+}
+
+#minimap{
     height: 250px;
     width: 250px;
     background: #e1e1e1;

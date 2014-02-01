@@ -10,7 +10,7 @@ var streetVG;
 initializeStreetViewGrabber();
 
 //initialize the image handler
-var imageHandler = new imageHandler('streetview-images');
+// var imageHandler = new imageHandler('streetview-images');
 
 //Initialize StreetViewGallery with needed image options, API key, and div ID
 function initializeStreetViewGrabber(){
@@ -21,7 +21,7 @@ function initializeStreetViewGrabber(){
         pitch: 25,
         key: 'AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY'
     }
-    streetVG = new StreetViewGrabber(imgOptions);
+    streetVG = new StreetViewGrabber(imgOptions, 'streetview-images');
 }
 
 //Initializes Google Maps and Directions
@@ -34,17 +34,12 @@ function initializeMap() {
         center: manhattan,
         streetViewControl: false
     }
-    searchMap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    searchMap = new google.maps.Map(document.getElementById("search-map"), mapOptions);
     directionsDisplay.setMap(searchMap);
 }
 
 function handleRouteSearch(){
-    $("#searching-route").css('visibility', 'visible');
-    $("#searching-route").html('<span>Finding route...</span>');
-
-    setTimeout(function(){
-        streetVG.findRoute(document.getElementById('start').value, document.getElementById('end').value);
-        }, 250);
+     streetVG.findRoute(document.getElementById('start').value, document.getElementById('end').value);
 }
 
 function handleStreetViewSearch(){
@@ -60,11 +55,6 @@ function retrieveSVPArray(){
     for (var i = 0; i<tmp.length;i++){
         console.log(tmp[i].src);
     }
-}
-
-function updatePage(svpArray){
-    setPageHeight(svpArray.length);
-    imageHandler.displayImages(svpArray);
 }
 
 function setPageHeight(numImages){
