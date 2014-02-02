@@ -132,6 +132,7 @@ body {
     display: inline-block;
     font-size: 10pt;
     opacity: 0.92;
+    visibility: hidden;
 }
 .minimap-container label{
     color: gray;

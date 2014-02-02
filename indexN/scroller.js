@@ -13,7 +13,6 @@ var currImage = 1;
 
 $(window).resize(function() {
     //Set page height for number of images grabbed. 
-    //TODO: Only do this on a new search and window resize, not every time page is scrolled.
     numImages = streetVG.numImages();
     windowHeight = $(window).height();
     //subtract 1 to make make sure currImage calculation doesn't exceed numImages

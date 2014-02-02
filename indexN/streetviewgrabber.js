@@ -145,10 +145,10 @@ function StreetViewGrabber(imgOptions, divID){
             setLoadingScreenMsg('No streetview images found for route');
             return;
         }
-
         svpArray = createStreetViewPoints(pArray);
         setPageHeight(svpArray.length);
         displayImages(svpArray);
+        // console.log(svpArray);
     }
 
     function createStreetViewPoints(pArray){
@@ -248,11 +248,13 @@ function StreetViewGrabber(imgOptions, divID){
                 if (!count) {
                     setLoadingScreenVisibility(false);
                     setImagesVisibility(true);
+                    setMinimapVisibility(true);
                 }
             });
         //If count is 0 to begin with, all images were already done loading
         } else {
-            setImagesVisibility(true)
+            setImagesVisibility(true);
+            setMinimapVisibility(true);
         }
     }
 
@@ -294,6 +296,9 @@ function StreetViewGrabber(imgOptions, divID){
         $(':input').not(':button, :submit').val('');
     }
     
+    function setMinimapVisibility(bool){
+        $(".minimap-container").css('visibility', bool ? 'visible' : 'hidden');
+    }
 
     //numImages()
     //===========
