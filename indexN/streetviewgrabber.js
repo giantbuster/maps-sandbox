@@ -18,6 +18,7 @@ function StreetViewGrabber(imgOptions, divID){
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var miniDirectionsDisplay = new google.maps.DirectionsRenderer();
     var webService = new google.maps.StreetViewService();
+
     var svpArray = [];
     var path;
 
@@ -76,16 +77,20 @@ function StreetViewGrabber(imgOptions, divID){
     //findStreetViews()
     //=================
     //Gets called by the 'Find Street Views' button.
-    //
+    //Changes loading screens and maps to show loading screen
     this.findStreetViews = function(){
-        //front-end
+        //set loading screen
         setLoadingScreenMsg('Loading...');
         setLoadingScreenVisibility(true);
+
+        //set search-panel
         setSearchingRouteVisibility(false);
         setImagesVisibility(false);
         setSVButtonDisabled(true);
-        setRouteInfo(path.Ub.origin, path.Ub.destination);
         directionsDisplay.setMap(null);
+
+        //set mini-map
+        setRouteInfo(path.Ub.origin, path.Ub.destination);
         miniDirectionsDisplay.setMap(miniMap);
         miniDirectionsDisplay.setDirections(path);
         resetSearchForm();
