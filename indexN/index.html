@@ -17,14 +17,14 @@
             <div class="tab"> < </div>
         </div>
         <div id="panel">
-            <form action="javascript:handleRouteSearch()">
+            <form action="javascript:handleRouteSearch()" id="search">
                 <div class="row">
                     <label>Start: </label>
-                    <input type="text" id="start" value="Grand Central Terminal">
+                    <input type="text" id="start" placeholder="Grand Central Terminal" value="Grand Central Terminal">
                 </div>
                 <div class="row">
                     <label>End: </label>
-                    <input type="text" id="end" value="Empire State Building">
+                    <input type="text" id="end" placeholder="Empire State Building" value="Empire State Building">
                 </div>
                 <div class="row submit">
                     <input type="submit" value="Find Route">
@@ -41,7 +41,20 @@
             </form>
         </div>
     </div>
-    <div id="loading-images"><p>Loading images...</p></div>
+    <div class="minimap-container">
+        <div class="route-info">
+            <div class="row">
+                <label>Start: </label>
+                <p id="origin"></p>
+            </div>
+            <div class="row">
+                <label>End: </label>
+                <p id="destination"></p>
+            </div>
+        </div>
+        <div id="minimap"></div>
+    </div>
+    <div id="loading-screen"><p>Loading images...</p></div>
     <div id="streetview-images"></div>
     <div id="progressbar">
         <div class="line-visible"></div>

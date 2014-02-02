@@ -16,6 +16,7 @@ function StreetViewGrabber(imgOptions, divID){
     var LIMIT = 5;
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
+    var miniDirectionsDisplay = new google.maps.DirectionsRenderer();
     var webService = new google.maps.StreetViewService();
     var svpArray = [];
     var path;
@@ -26,42 +27,72 @@ function StreetViewGrabber(imgOptions, divID){
     //pulls up street view images between pointA and pointB, generates HTML, and
     //displays it.
     this.findRoute = function(origin, destination) {
-        var start = origin;
-        var end = destination;
-        var request = {
-            origin: start,
-            destination: end,
-            travelMode: google.maps.TravelMode.DRIVING
-        };
+        //parse form input.
+        //check for blank inputs
+        if (origin.length==0 || destination.length==0){
+            setSearchingRouteVisibility(true);
+            setSearchingRouteMsg('Fields cannot be blank');
+            return;
+        //check for identical inputs
+        } else if (origin.toLowerCase() == destination.toLowerCase()){
+            setSearchingRouteVisibility(true);
+            setSearchingRouteMsg('Fields cannot be the same');
+            return;
+        }
+
+        //begin searching for route
         directionsDisplay.setMap(null);
         setSearchingRouteVisibility(true);
-        setSearchingRouteMsg('Finding route...');
+        setSearchingRouteMsg('Searching for route...');
+        var request = {
+            origin: origin,
+            destination: destination,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
         setTimeout(function(){
             directionsService.route(request, function(response, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
-                    console.log(response);
+                    path = response;
+                    //If route length is 1, there's no route, only a single point.
+                    if (path.routes[0].overview_path.length == 1){
+                        setSearchingRouteMsg('No route found');
+                        setSVButtonDisabled(true);
+                        return;
+                    } 
+                    //Display route and activate button
                     directionsDisplay.setMap(searchMap);
-                    directionsDisplay.setDirections(response);
-                    path = response.routes[0].overview_path;
+                    directionsDisplay.setDirections(path);
                     setSearchingRouteMsg('Route found');
                     setSVButtonDisabled(false);
                 } else {
+                    //Status.OK is false; no route found
                     setSearchingRouteMsg('No route found');
                     setSVButtonDisabled(true);
                 }
             });
-        }, 250);
+        }, 300);
     }
 
+    //findStreetViews()
+    //=================
+    //Gets called by the 'Find Street Views' button.
+    //
     this.findStreetViews = function(){
         //front-end
-        setSearchingRouteVisibility(false);
+        setLoadingScreenMsg('Loading...');
         setLoadingScreenVisibility(true);
+        setSearchingRouteVisibility(false);
+        setImagesVisibility(false);
         setSVButtonDisabled(true);
+        setRouteInfo(path.Ub.origin, path.Ub.destination);
+        directionsDisplay.setMap(null);
+        miniDirectionsDisplay.setMap(miniMap);
+        miniDirectionsDisplay.setDirections(path);
+        resetSearchForm();
 
         //back-end
         resetStreetViews();
-        findStreetViews(path);
+        buildStreetViews(path.routes[0].overview_path);
     }
 
     //resetStreetViews()
@@ -74,10 +105,10 @@ function StreetViewGrabber(imgOptions, divID){
         svpArray = [];
     }
 
-    //findStreetViews()
+    //buildStreetViews()
     //=================
     //Given an array of points, goes through them and finds panoramic images
-    function findStreetViews(pointsArray){
+    function buildStreetViews(pointsArray){
         var paLength = pointsArray.length;
         var currentIteration = 0;
         var panoArray = [];
@@ -91,7 +122,7 @@ function StreetViewGrabber(imgOptions, divID){
         //If no result is found, it puts null into the array.
         function findPanorama(point, index, paLength, panoArray){
             webService.getPanoramaByLocation(point, RADIUS, function(result, status){
-                console.log('index', index);
+                // console.log('index', index);
                 currentIteration++;
                 panoArray[index] = result;
                 if (currentIteration == (paLength > LIMIT ? LIMIT : paLength)){
@@ -108,8 +139,14 @@ function StreetViewGrabber(imgOptions, divID){
     function parsePanoramaArray(pArray){
         trimNull(pArray);
         removeRepeats(pArray);
+        console.log('pArray after being cleaned', pArray);
+
+        if (pArray.length == 0){
+            setLoadingScreenMsg('No streetview images found for route');
+            return;
+        }
+
         svpArray = createStreetViewPoints(pArray);
-        
         setPageHeight(svpArray.length);
         displayImages(svpArray);
     }
@@ -194,8 +231,6 @@ function StreetViewGrabber(imgOptions, divID){
     }
 
     function loadImages(imgArray){
-        setImagesVisibility(false);
-        
         //put the img tags onto the page
         for (var i = 0; i < imgArray.length; i++){
             document.getElementById(divID).innerHTML += imgArray[i];
@@ -208,18 +243,15 @@ function StreetViewGrabber(imgOptions, divID){
         //Check if any images need to be loaded
         if (count) {
             //Wait for them to load
-            console.log('Loading...');
             imgs.load(function() {
                 count--;
                 if (!count) {
-                    console.log('Done loading!');
                     setLoadingScreenVisibility(false);
                     setImagesVisibility(true);
                 }
             });
         //If count is 0 to begin with, all images were already done loading
         } else {
-            console.log('No loading needed');
             setImagesVisibility(true)
         }
     }
@@ -238,7 +270,11 @@ function StreetViewGrabber(imgOptions, divID){
     }
 
     function setLoadingScreenVisibility(bool){
-        $("#loading-images").css('visibility', bool ? 'visible' : 'hidden');
+        $("#loading-screen").css('visibility', bool ? 'visible' : 'hidden');
+    }
+
+    function setLoadingScreenMsg(msg){
+        $("#loading-screen").html('<p>'+msg+'</p>');
     }
 
     function setImagesVisibility(bool){
@@ -249,6 +285,14 @@ function StreetViewGrabber(imgOptions, divID){
         $("#street-view-button").prop('disabled', bool);
     }
 
+    function setRouteInfo(origin, destination){
+        $("#origin").html(origin);
+        $("#destination").html(destination);
+    }
+
+    function resetSearchForm(){
+        $(':input').not(':button, :submit').val('');
+    }
     
 
     //numImages()

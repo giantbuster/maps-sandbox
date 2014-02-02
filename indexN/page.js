@@ -3,7 +3,9 @@
 
 //initialize the map
 var searchMap;
-google.maps.event.addDomListener(window, 'load', initializeMap);
+google.maps.event.addDomListener(window, 'load', initializeSearchMap);
+var miniMap;
+google.maps.event.addDomListener(window, 'load', initializeMiniMap);
 
 //initialize the street view grabber
 var streetVG;
@@ -24,10 +26,10 @@ function initializeStreetViewGrabber(){
     streetVG = new StreetViewGrabber(imgOptions, 'streetview-images');
 }
 
+// var sanFrancisco = new google.maps.LatLng(37.774950000000004, -122.41929);
 //Initializes Google Maps and Directions
-function initializeMap() {
+function initializeSearchMap() {
     var directionsDisplay = new google.maps.DirectionsRenderer();
-    // var sanFrancisco = new google.maps.LatLng(37.774950000000004, -122.41929);
     var manhattan = new google.maps.LatLng(40.756319,-73.98468);
     var mapOptions = {
         zoom: 11,
@@ -38,28 +40,28 @@ function initializeMap() {
     directionsDisplay.setMap(searchMap);
 }
 
+function initializeMiniMap() {
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    var manhattan = new google.maps.LatLng(40.756319,-73.98468);
+    var mapOptions = {
+        zoom: 11,
+        center: manhattan,
+        streetViewControl: false,
+        mapTypeControl: false
+    }
+    miniMap = new google.maps.Map(document.getElementById("minimap"), mapOptions);
+    directionsDisplay.setMap(miniMap);
+}
+
 function handleRouteSearch(){
-     streetVG.findRoute(document.getElementById('start').value, document.getElementById('end').value);
+    streetVG.findRoute(document.getElementById('start').value, document.getElementById('end').value);
 }
 
 function handleStreetViewSearch(){
     streetVG.findStreetViews();
-}
+    togglePanel();
+    $(window).scrollTop(0);
 
-function retrieveSVPArray(){
-    console.log('Retrieving SVP Array...');
-    
-    var tmp = streetVG.returnArray();
-    console.log('tmp', tmp);
-
-    for (var i = 0; i<tmp.length;i++){
-        console.log(tmp[i].src);
-    }
-}
-
-function setPageHeight(numImages){
-    pageHeight = window.innerHeight + (numImages * sensitivity) - 1;
-    document.getElementById('container').style.height = pageHeight+"px";
 }
 
 $(document).ready(function() {

@@ -18,21 +18,23 @@ body {
 #searching-route{
     visibility: hidden;
     text-align: center;
-    font-size: 14pt;
+    font-size: 12pt;
     color: gray;
     vertical-align: middle;
     line-height: 25px;
     padding: 5px 0px;
 }
 
-#loading-images{
+#loading-screen{
+    position: absolute;
+    top: 40%;
     font-size: 32pt;
     height: 100%;
     width: 100%;
     /*margin-top: 40%;*/
     text-align: center;
     visibility: hidden;
-    z-index: 15;
+    /*z-index: 11;*/
     /*background: white;*/
     color: white;
 }
@@ -72,7 +74,7 @@ body {
 }
 .panel-with-tab{
     position: fixed;
-    top: 5px;
+    top: 245px;
     right: 0px;
     z-index: 15;
 }
@@ -86,7 +88,7 @@ body {
     background: rgba(0, 0, 0, 0.7);
     padding: 10px;
     display: inline-block;
-    border-radius: 5px 0px 0px 5px;
+    border-radius: 0px 0px 0px 5px;
 }
 
 .panel-with-tab .slider-tab{
@@ -94,13 +96,6 @@ body {
     position: absolute;
     left: -20px;
     top: 10px;
-}
-.panel-with-tab .slider-tab .peekbar{
-    background: rgba(0, 0, 0, 0.7);
-    /*border-radius: 0px 0px 5px 5px;*/
-    height: 366px;
-    width: 10px;
-    display: inline-block;
 }
 .panel-with-tab .slider-tab .tab{
     padding: 14px 2px 17px 2px;
@@ -125,11 +120,33 @@ body {
     background: #e1e1e1;
     display: inline-block;
 }
-
+.minimap-container{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    color: white;
+    z-index: 11;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    display: inline-block;
+    font-size: 10pt;
+    opacity: 0.92;
+}
+.minimap-container label{
+    color: gray;
+}
 #minimap{
-    height: 250px;
+    height: 175px;
     width: 250px;
     background: #e1e1e1;
+    display: inline-block;
+}
+.route-info{
+    margin-bottom: 10px;
+}
+.route-info p{
+    margin: 0px;
     display: inline-block;
 }
 #streetview-images img{
