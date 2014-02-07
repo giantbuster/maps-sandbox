@@ -4,6 +4,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY&sensor=false"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="streetviewgrabber.js"></script>
     <script type="text/javascript" src="streetviewpoint.js"></script>
     <script type="text/javascript" src="scroller.js"></script>
@@ -12,54 +13,75 @@
 </head>
 <body>
 <div id="container">
-    <div class="panel-with-tab">
-        <div class="slider-tab">
-            <div class="tab"> < </div>
+    <div id="about-container">
+        <div class="content-area">
+            <h1>Googlizer</h1>
+            <h4>Travel the world, simply by scrolling.</h4>
+            <button id="get-started">Get Started</button>
+            <p>Developed by Jefferson Lam</p>
+            <p>Powered by Google Maps</p>
         </div>
-        <div id="panel">
-            <form action="javascript:handleRouteSearch()" id="search">
+    </div>
+    <div id="app-container">
+        <div class="panel-with-tab">
+            <div id="panel">
+                <h3>Search</h3>
+                <div class="search-area">
+                    <form action="javascript:handleRouteSearch()" id="search">
+                        <div class="row">
+                            <label>Start: </label>
+                            <input type="text" id="start" placeholder="Grand Central Terminal" value="Grand Central Terminal">
+                        </div>
+                        <div class="row">
+                            <label>End: </label>
+                            <input type="text" id="end" placeholder="Empire State Building" value="Empire State Building">
+                        </div>
+                        <div class="row submit">
+                            <input type="submit" value="Find Route">
+                        </div>
+                    </form>
+                    <div class="clear-fix"></div>
+                    <div id="searching-route"><span></span></div>
+                </div>
+                <div class="search-results-area">
+                    <div class="searchmap-container">
+                        <div id="search-map"></div>
+                    </div>
+                    <div class="clear-fix"></div>
+                    <div class="about-link">
+                        <button id="about-btn">About</button>
+                    </div>
+                    <form action="javascript:handleStreetViewSearch()">
+                        <div class="row submit">
+                            <input id="street-view-button" type="submit" value="Find Street Views" disabled>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="slider-tab">
+                <div class="tab"> > </div>
+            </div>
+        </div>
+        <div class="minimap-container">
+            <div class="route-info">
                 <div class="row">
                     <label>Start: </label>
-                    <input type="text" id="start" placeholder="Grand Central Terminal" value="Grand Central Terminal">
+                    <p id="origin"></p>
                 </div>
                 <div class="row">
                     <label>End: </label>
-                    <input type="text" id="end" placeholder="Empire State Building" value="Empire State Building">
+                    <p id="destination"></p>
                 </div>
-                <div class="row submit">
-                    <input type="submit" value="Find Route">
-                </div>
-            </form>
-            <div id="searching-route"><span></span></div>
-            <div class="searchmap-container">
-                <div id="search-map"></div>
             </div>
-            <form action="javascript:handleStreetViewSearch()">
-                <div class="row submit">
-                    <input id="street-view-button" type="submit" value="Find Street Views" disabled>
-                </div>
-            </form>
+            <div id="minimap"></div>
         </div>
-    </div>
-    <div class="minimap-container">
-        <div class="route-info">
-            <div class="row">
-                <label>Start: </label>
-                <p id="origin"></p>
+        <div id="loading-screen"><p>Loading images...</p></div>
+        <div id="streetview-images"></div>
+        <div id="progressbar">
+            <div class="line-visible"></div>
+            <div class="actual-line">
+                <div class="tracker"></div>
             </div>
-            <div class="row">
-                <label>End: </label>
-                <p id="destination"></p>
-            </div>
-        </div>
-        <div id="minimap"></div>
-    </div>
-    <div id="loading-screen"><p>Loading images...</p></div>
-    <div id="streetview-images"></div>
-    <div id="progressbar">
-        <div class="line-visible"></div>
-        <div class="actual-line">
-            <div class="tracker"></div>
         </div>
     </div>
 </div>

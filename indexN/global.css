@@ -11,9 +11,27 @@ body {
     overflow-y: hidden;
     background: gray;
 }
-#container{
+.clear-fix{
+    clear: both;
+}
+#app-container{
+    position: fixed;
+    top: 0;
+    left: 0;
     height: auto;
     width: auto;
+}
+.about-link{
+    float: left;
+    margin: 5px 0px 0px 12px;
+}
+.about-link button{
+    border: none;
+    font-size: 12px;
+    padding: 5px 10px;
+    background-color: rgba(0,0,0,0);
+    color: whitesmoke;
+    cursor: pointer;
 }
 #searching-route{
     visibility: hidden;
@@ -23,11 +41,13 @@ body {
     vertical-align: middle;
     line-height: 25px;
     padding: 5px 0px;
+    height: 30px;
 }
 
 #loading-screen{
-    position: absolute;
+    position: fixed;
     top: 40%;
+    margin: 0 auto;
     font-size: 32pt;
     height: 100%;
     width: 100%;
@@ -38,44 +58,115 @@ body {
     /*background: white;*/
     color: white;
 }
-.row{
+ .panel-with-tab .row{
     display: block;
     width: inherit;
+    margin: 0px 0px 20px 0px;
+}
+.search-area .submit{
+    margin-bottom: 10px;
 }
 .row label{
     display: inline-block;
     width: 50px;
 }
 .row input[type="text"]{
-    height: 18px;
+    height: 24px;
     line-height: 16px;
-    width: 182px;
+    width: 304px;
     border: 1px solid #d8d8d8;
     padding: 0 5px;
+    font-size: 10pt;
     font-family: "Open Sans";
 }
 .submit{
     text-align: right;
     padding: 5px 0px 0px 0px;
 }
-.submit input{
+.submit input[type="submit"]{
     border: none;
     font-size: 14px;
     padding: 5px 20px;
     background-color: #2484C4;
     color: white;
+    cursor: pointer;
 }
-#street-view-button{
-    background-color: #2499C4;
+.search-area .submit{
+    float: right;
 }
+#about-container{
+    position: fixed;
+    top: -1080px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 11;
+    background-image: url('1.jpg');
+    background-size: 100% 100%;
+}
+#about-container .content-area{
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin-top: 100px;
+    padding-top: 50px;
+    background: rgba(10, 10, 10, 0.7);
+    text-align: center;
+    color: white;
+}
+
+#about-container .content-area button{
+    border: none;
+    font-size: 24px;
+    padding: 15px 30px;
+    background-color: #2484C4;
+    color: white;
+    cursor: pointer;
+    margin: 30px 0px;
+}
+
+#about-container .content-area p{
+    margin: 0;
+    color: #999;
+}
+
+#about-container .content-area h1{
+    margin: 0px;
+    font-size: 5em;
+    font-weight: 600;
+    font-family: 'Helvetica';
+}
+
+#about-container .content-area h4{
+    font-weight: 200;
+    line-height: 1.4;
+    font-size: 21px;
+}
+
+#panel h3{
+    margin: 0px 0px 20px 10px;
+    color: gray;
+    font-weight: lighter;
+    text-align: center;
+}
+.search-area{;
+    width: 370px;
+    padding: 0px 15px;
+    vertical-align: top;
+}
+
+.search-area, .search-results-area{
+    /*display: inline-block;*/
+}
+
 #street-view-button:disabled{
     background-color: gray;
     opacity: 0.25;
 }
 .panel-with-tab{
-    position: fixed;
-    top: 245px;
-    right: 0px;
+    position: absolute;
+    top: 5px;
+    left: 0px;
     z-index: 15;
 }
 .panel-with-tab #panel{
@@ -84,24 +175,23 @@ body {
     right: 0px;
     color: white;
     z-index: 11;
-    width: 250px;
-    background: rgba(0, 0, 0, 0.7);
+    width: 400px;
+    background: rgba(10, 10, 10, 0.8);
     padding: 10px;
     display: inline-block;
-    border-radius: 0px 0px 0px 5px;
 }
 
 .panel-with-tab .slider-tab{
     display: inline-block;
     position: absolute;
-    left: -20px;
+    left: 420px;
     top: 10px;
 }
 .panel-with-tab .slider-tab .tab{
-    padding: 14px 2px 17px 2px;
+    padding: 20px 2px 23px 2px;
     width: 16px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 5px 0px 0px 5px;
+    background: rgba(10, 10, 10, 0.8);
+    /*border-radius: 5px 0px 0px 5px;*/
     text-align: center;
     border: none;
     color: rgba(255, 255, 255, 0.4);
@@ -114,26 +204,39 @@ body {
 .panel-with-tab .slider-tab .tab:hover{
     background: rgba(50, 50, 50, 0.7);
 }
+.search-results-area .row{
+    margin: 0px 15px 7px 0px;
+}
 #search-map{
     height: 250px;
-    width: 250px;
+    width: 370px;
+    margin: 0px 15px;
     background: #e1e1e1;
     display: inline-block;
 }
 .minimap-container{
     position: fixed;
     top: 0px;
-    right: 0px;
+    right: -270px;
     color: white;
     z-index: 11;
     width: 250px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(10, 10, 10, 0.8);
     padding: 10px;
     display: inline-block;
     font-size: 10pt;
     opacity: 0.92;
-    visibility: hidden;
 }
+.panel-with-tab #panel #street-view-button{
+    background-color: #3FA373;
+    cursor: pointer;
+}
+.panel-with-tab #panel #street-view-button:disabled{
+    background-color: gray;
+    opacity: 0.25;
+    cursor: default;
+}
+
 .minimap-container label{
     color: gray;
 }
@@ -150,6 +253,7 @@ body {
     margin: 0px;
     display: inline-block;
 }
+
 #streetview-images img{
     position: fixed;
     top: 0;
@@ -167,9 +271,10 @@ body {
 }
 #progressbar{
     position: fixed;
-    bottom: 0;
+    bottom: -50px;
+    left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(10, 10, 10, 0.8);
     padding: 16px 0px 0px 10px;
     z-index: 15;
 }

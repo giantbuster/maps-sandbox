@@ -1,5 +1,5 @@
 //page.js
-//Creates all needed JavaScript objects
+//Creates all needed JavaScript objects and reads button submissions
 
 //initialize the map
 var searchMap;
@@ -10,9 +10,6 @@ google.maps.event.addDomListener(window, 'load', initializeMiniMap);
 //initialize the street view grabber
 var streetVG;
 initializeStreetViewGrabber();
-
-//initialize the image handler
-// var imageHandler = new imageHandler('streetview-images');
 
 //Initialize StreetViewGallery with needed image options, API key, and div ID
 function initializeStreetViewGrabber(){
@@ -60,20 +57,74 @@ function handleRouteSearch(){
 function handleStreetViewSearch(){
     streetVG.findStreetViews();
     togglePanel();
+    toggleMinimap();
+    toggleProgressbar();
+    toggleScrollable();
     $(window).scrollTop(0);
-
 }
 
 $(document).ready(function() {
     $('.tab').on('click', function() {
         togglePanel();
+        toggleMinimap();
+        toggleProgressbar();
+        toggleScrollable();
+    });
+
+
+    $('#about-btn').on('click', function() {
+        toggleAbout();
+        toggleApp();
+        toggleImgs();
+    });
+    $('#get-started').on('click', function() {
+        toggleAbout();
+        toggleApp();
+        toggleImgs();
     });
 });
 
 function togglePanel(){
     $('.panel-with-tab').animate({
-        "right": parseInt($('.panel-with-tab').css('right'))==0 ? "-=270px" : "+=270px"
+        "left": parseInt($('.panel-with-tab').css('left'))==0 ? "-=420px" : "+=420px"
         }, 
         300
     );
+}
+function toggleMinimap(){
+    $('.minimap-container').animate({
+        "right": parseInt($('.minimap-container').css('right'))== -270 ? "+=270px" : "-=270px"
+        }, 
+        300
+    );
+}
+
+
+
+function toggleAbout(){
+    $('#about-container').animate({
+        "top": parseInt($('#about-container').css('top'))==0 ? "-=1080" : "+=1080"
+        }, 
+        300
+    );
+}
+
+function toggleApp(){
+    $('#app-container').animate({
+        "top": parseInt($('#app-container').css('top'))==0 ? "+=1080" : "-=1080"
+        }, 
+        300
+    );
+}
+
+function toggleProgressbar(){
+    $('#progressbar').animate({
+        "bottom": parseInt($('#progressbar').css('bottom'))==0 ? "-=50" : "+=50"
+        }, 
+        300
+    );
+}
+
+function toggleScrollable(){
+    scrollable = (scrollable == true ? false : true);
 }

@@ -50,6 +50,7 @@ function StreetViewGrabber(imgOptions, divID){
             destination: destination,
             travelMode: google.maps.TravelMode.DRIVING
         };
+        //Set 300ms pause so that it's easier to see that it's loading
         setTimeout(function(){
             directionsService.route(request, function(response, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
@@ -66,7 +67,7 @@ function StreetViewGrabber(imgOptions, divID){
                     setSearchingRouteMsg('Route found');
                     setSVButtonDisabled(false);
                 } else {
-                    //Status.OK is false; no route found
+                    //Failed to find any results
                     setSearchingRouteMsg('No route found');
                     setSVButtonDisabled(true);
                 }
@@ -153,9 +154,11 @@ function StreetViewGrabber(imgOptions, divID){
         svpArray = createStreetViewPoints(pArray);
         setPageHeight(svpArray.length);
         displayImages(svpArray);
-        // console.log(svpArray);
     }
 
+    //createStreetViewPoints()
+    //========================
+    //Creates an array of StreetViewPoint objects, which contain panorama URLs and markers.
     function createStreetViewPoints(pArray){
         var tmpArray = [];
         var heading = 0;
@@ -212,7 +215,7 @@ function StreetViewGrabber(imgOptions, divID){
 
     //========================================
     //----------------------------------------
-    //Public functions for controlling image gallery
+    //Functions for building, loading, and displaying image gallery
     //----------------------------------------
     //========================================
 
@@ -253,16 +256,20 @@ function StreetViewGrabber(imgOptions, divID){
                 if (!count) {
                     setLoadingScreenVisibility(false);
                     setImagesVisibility(true);
-                    setMinimapVisibility(true);
+                    // setMinimapVisibility(true);
                 }
             });
         //If count is 0 to begin with, all images were already done loading
         } else {
             setImagesVisibility(true);
-            setMinimapVisibility(true);
+            // setMinimapVisibility(true);
         }
     }
 
+    //=======================================================
+    //setPageHeight()
+    //TODO: Fix this so that it won't use global variables!!!
+    //=======================================================
     function setPageHeight(numImages){
         pageHeight = window.innerHeight + (numImages * sensitivity) - 1;
         document.getElementById('container').style.height = pageHeight+"px";
@@ -302,7 +309,11 @@ function StreetViewGrabber(imgOptions, divID){
     }
     
     function setMinimapVisibility(bool){
-        $(".minimap-container").css('visibility', bool ? 'visible' : 'hidden');
+        $('.minimap-container').animate({
+            "right": bool ? "+=270px" : "-=270px"
+            }, 
+            300
+        );
     }
 
     //numImages()
