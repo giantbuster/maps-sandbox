@@ -7,6 +7,13 @@ google.maps.event.addDomListener(window, 'load', initializeSearchMap);
 var miniMap;
 google.maps.event.addDomListener(window, 'load', initializeMiniMap);
 
+
+var rendererOptions = {
+    draggable: true
+};
+var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+var directionsService = new google.maps.DirectionsService();
+
 //initialize the street view grabber
 var streetVG;
 initializeStreetViewGrabber();
@@ -26,19 +33,22 @@ function initializeStreetViewGrabber(){
 // var sanFrancisco = new google.maps.LatLng(37.774950000000004, -122.41929);
 //Initializes Google Maps and Directions
 function initializeSearchMap() {
-    var directionsDisplay = new google.maps.DirectionsRenderer();
+
     var manhattan = new google.maps.LatLng(40.756319,-73.98468);
     var mapOptions = {
         zoom: 11,
         center: manhattan,
-        streetViewControl: false
     }
     searchMap = new google.maps.Map(document.getElementById("search-map"), mapOptions);
     directionsDisplay.setMap(searchMap);
+
+    google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+        streetVG.changeRoute(directionsDisplay.getDirections());
+    });
 }
 
 function initializeMiniMap() {
-    var directionsDisplay = new google.maps.DirectionsRenderer();
+    // var directionsDisplay = new google.maps.DirectionsRenderer();
     var manhattan = new google.maps.LatLng(40.756319,-73.98468);
     var mapOptions = {
         zoom: 11,
@@ -58,45 +68,62 @@ function handleStreetViewSearch(){
     streetVG.findStreetViews();
     togglePanel();
     toggleMinimap();
+    toggleMinimapHider();
     toggleProgressbar();
-    toggleScrollable();
-    $(window).scrollTop(0);
+    // toggleScrollable();
+    // $(window).scrollTop(0);
 }
 
 $(document).ready(function() {
     $('.tab').on('click', function() {
         togglePanel();
         toggleMinimap();
+        toggleMinimapHider();
         toggleProgressbar();
         toggleScrollable();
     });
 
+    $('#minimap-hider').on('click', function() {
+        $('.minimap-container').animate({
+            "right": parseInt($('.minimap-container').css('right'))== -271 ? "+=271px" : "-=271px"
+            }, 
+            300
+        );
+    });
 
     $('#about-btn').on('click', function() {
         toggleAbout();
         toggleApp();
-        toggleImgs();
+        // toggleImgs();
     });
     $('#get-started').on('click', function() {
         toggleAbout();
         toggleApp();
-        toggleImgs();
+        // toggleImgs();
     });
 });
 
 function togglePanel(){
     $('.panel-with-tab').animate({
-        "left": parseInt($('.panel-with-tab').css('left'))==0 ? "-=420px" : "+=420px"
+        "left": parseInt($('.panel-with-tab').css('left'))==0 ? "-=570px" : "+=570px"
         }, 
         300
     );
 }
 function toggleMinimap(){
-    $('.minimap-container').animate({
-        "right": parseInt($('.minimap-container').css('right'))== -270 ? "+=270px" : "-=270px"
-        }, 
-        300
-    );
+    if (parseInt($('.minimap-container').css('right')) == -270 ){
+        $('.minimap-container').animate({
+            "right": "+=270px"
+            }, 
+            300
+        );
+    } else if ( parseInt($('.minimap-container').css('right')) == 0 ){
+        $('.minimap-container').animate({
+            "right": "-=270px"
+            }, 
+            300
+        );
+    }
 }
 
 
@@ -127,4 +154,20 @@ function toggleProgressbar(){
 
 function toggleScrollable(){
     scrollable = (scrollable == true ? false : true);
+}
+
+function toggleMinimapHider(){
+    $('#minimap-hider').animate({
+        "right": parseInt($('#minimap-hider').css('right'))==0 ? "-=50" : "+=50"
+        }, 
+        300
+    );
+}
+
+function toggleImgs(){
+    $('#streetview-images').animate({
+        "top": parseInt($('#streetview-images').css('top'))==0 ? "+=1080" : "-=1080"
+        }, 
+        300
+    );      
 }
