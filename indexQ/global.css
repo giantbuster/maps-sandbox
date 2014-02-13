@@ -1,0 +1,384 @@
+html {
+    height: 100% ;
+    font-family: "Open Sans";
+}
+body { 
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin: 0; 
+    padding: 0; 
+    overflow-y: hidden;
+    /*background: linear-gradient(#999, #666);*/
+}
+.clear-fix{
+    clear: both;
+}
+#app-container{
+    position: fixed;
+    top: 1080px;
+    left: 0;
+    height: auto;
+    width: auto;
+}
+.about-link{
+    float: left;
+    margin: 5px 0px 0px 12px;
+}
+.about-link button{
+    border: none;
+    font-size: 14px;
+    padding: 5px 10px;
+    background-color: rgba(0,0,0,0.4);
+    color: whitesmoke;
+    cursor: pointer;
+}
+#searching-route{
+    visibility: hidden;
+    text-align: center;
+    font-size: 12pt;
+    color: rgb(209, 209, 209);
+    vertical-align: middle;
+    line-height: 25px;
+    padding: 5px 0px;
+    height: 30px;
+}
+#loading-screen{
+    position: fixed;
+    top: 0px;
+    margin: 0 auto;
+    font-size: 26pt;
+    height: 100%;
+    width: 100%;
+    padding: 40% 0%;
+    text-align: center;
+    visibility: hidden;
+    z-index: 12;
+    color: white;
+}
+
+#loading-screen-bg{
+    visibility: hidden;
+    z-index: 11;
+}
+#loading-screen-bg .spinner{
+    padding: 40% 0%;
+    width: 50px;
+    height: 50px;
+    z-index: 12;
+    margin: 0 auto;
+    /*background: white;*/
+}
+#loading-screen-bg .cover{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 11;
+}
+#loading-screen-bg img{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+ .panel-with-tab .row{
+    display: block;
+    width: inherit;
+    margin: 0px 0px 20px 30px;
+}
+.search-area .submit{
+    margin-bottom: 10px;
+    margin-right: 37px;
+}
+.row label{
+    display: inline-block;
+    width: 50px;
+}
+.row input[type="text"]{
+    height: 24px;
+    line-height: 16px;
+    width: 364px;
+    border: 1px solid #d8d8d8;
+    margin-left: 20px;
+    padding: 0 5px;
+    font-size: 10pt;
+    font-family: "Open Sans";
+}
+.submit{
+    text-align: right;
+    padding: 5px 0px 0px 0px;
+}
+.submit input[type="submit"]{
+    border: none;
+    font-size: 14px;
+    padding: 5px 20px;
+    background-color: #2484C4;
+    color: white;
+    cursor: pointer;
+}
+.search-area .submit{
+    float: right;
+}
+#about-container{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 20;
+    background-image: url('1.jpg');
+    background-size: 100% 100%;
+}
+#about-container .content-area{
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin-top: 100px;
+    padding-top: 50px;
+    background-image: linear-gradient(90deg, rgba(10, 10, 10, 0.1) 0%, rgba(10, 10, 10, 0.7) 25%, rgba(10, 10, 10, 0.7) 75%, rgba(10, 10, 10, 0.1) 100%);
+    text-align: center;
+    color: white;
+}
+
+#about-container .content-area button{
+    border: none;
+    font-size: 24px;
+    padding: 15px 30px;
+    background-color: #2484C4;
+    color: white;
+    cursor: pointer;
+    margin: 30px 0px;
+}
+
+#about-container .content-area p{
+    margin: 0;
+    color: #999;
+}
+
+#about-container .content-area h1{
+    margin: 0px;
+    font-size: 5em;
+    font-weight: 600;
+    font-family: 'Helvetica';
+}
+
+#about-container .content-area h4{
+    font-weight: 200;
+    line-height: 1.4;
+    font-size: 21px;
+}
+
+#panel h3{
+    margin: 0px 0px 20px 10px;
+    color: gray;
+    font-weight: lighter;
+    text-align: center;
+}
+.search-area{;
+    width: 520px;
+    padding: 0px 15px;
+    vertical-align: top;
+}
+
+.search-area, .search-results-area{
+    /*display: inline-block;*/
+}
+
+#street-view-button:disabled{
+    background-color: gray;
+    opacity: 0.25;
+}
+.panel-with-tab{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 20;
+}
+.panel-with-tab #panel{
+    position: relative;
+    top: 0px;
+    right: 0px;
+    color: white;
+    z-index: 19;
+    width: 550px;
+    background: rgba(10, 10, 10, 0.8);
+    padding: 10px;
+    display: inline-block;
+}
+
+.panel-with-tab .slider-tab{
+    display: inline-block;
+    position: absolute;
+    left: 570px;
+    top: 0px;
+}
+.panel-with-tab .slider-tab .tab{
+    padding: 20px 2px 23px 2px;
+    width: 16px;
+    background: rgba(10, 10, 10, 0.8);
+    /*border-radius: 5px 0px 0px 5px;*/
+    text-align: center;
+    border: none;
+    color: #49AAEB;
+    font-weight: bold;
+    font-size: 7pt;
+    cursor: pointer;
+    font-family: 'verdana';
+    display: inline-block;
+}
+.panel-with-tab .slider-tab .tab:hover{
+    background: rgba(50, 50, 50, 0.7);
+}
+.search-results-area .row{
+    margin: 0px 15px 7px 0px;
+}
+#search-map{
+    height: 330px;
+    width: 520px;
+    margin: 0px 15px;
+    background: #e1e1e1;
+    display: inline-block;
+}
+.minimap-container{
+    position: fixed;
+    top: 0px;
+    right: -270px;
+    color: white;
+    z-index: 19;
+    width: 250px;
+    background: rgba(10, 10, 10, 0.8);
+    padding: 10px;
+    display: inline-block;
+    font-size: 9pt;
+    opacity: 0.92;
+}
+.panel-with-tab #panel #street-view-button{
+    background-color: #20B166;
+    cursor: pointer;
+}
+.panel-with-tab #panel #street-view-button:disabled{
+    background-color: gray;
+    opacity: 0.25;
+    cursor: default;
+}
+
+.minimap-container label{
+    color: gray;
+}
+#minimap{
+    height: 175px;
+    width: 250px;
+    background: #e1e1e1;
+    display: inline-block;
+}
+.route-info{
+    margin-bottom: 10px;
+}
+.route-info p{
+    margin: 0px;
+    display: inline-block;
+}
+
+
+#streetview-images img{
+    visibility: hidden;
+    /*position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;*/
+}
+
+.current-image{
+    z-index: 10;
+}
+#progressbar{
+    position: fixed;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.8);
+    padding: 22px 0px 0px 10px;
+    z-index: 20;
+}
+#progressbar .line-visible{
+    position: relative;
+    background: rgba(255, 255, 255, 0.4);
+    height: 2px;
+    margin-left: 7px; /* trackerwidth/2 */
+    margin-right: 27px; /* parentpadding * 2 + trackerwidth/2 - 1*/
+}
+#progressbar .actual-line{
+    position: relative;
+    height: 0px;
+    margin-right: 36px; /* Parentpadding * 2 + trackerwidth */
+}
+#progressbar .actual-line .tracker{
+    position: absolute;
+    top: -16px; /* -(trackerheight + 2) */
+    border-top: 14px solid rgba(110, 178, 231, 0.68);
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    width: 0px;
+    height: 0px;
+    /*cursor: pointer;*/
+}
+#progressbar .line-containment{
+    position: relative;
+    height: 2px;
+    padding-left: 0px; /* trackerwidth/2 - 7 */
+    padding-right: 20px; /* parentpadding * 2 + trackerwidth/2 - 8 */
+}
+#minimap-hider{
+    position: fixed;
+    top: 0px;
+    right: -50px;
+    width: 25px;
+    height: 22px;
+    padding-top: 3px;
+    background: rgba(60, 60, 60, 0.9);
+    z-index: 20;
+    color: #49AAEB;
+}
+#minimap-hider:hover{
+    background: rgba(100, 100, 100, 0.9);
+    cursor: pointer;
+}
+#test-sv{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('2.jpg');
+    background-size: cover;
+    background-position: 50% 80%;
+    z-index: 10;
+}
+#tutorial{
+    /*text-align: center;*/
+    position: relative;
+    z-index: 11;
+    display: none;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    padding: 25% 0% 0% 25%;
+    margin-top: -22px;
+}
+
+#tutorial h1{
+    font-weight: 200;
+    line-height: 1.4;
+    color: white;
+}
