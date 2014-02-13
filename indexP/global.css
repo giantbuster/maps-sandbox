@@ -37,13 +37,12 @@ body {
     visibility: hidden;
     text-align: center;
     font-size: 12pt;
-    color: gray;
+    color: rgb(209, 209, 209);
     vertical-align: middle;
     line-height: 25px;
     padding: 5px 0px;
     height: 30px;
 }
-
 #loading-screen{
     position: fixed;
     top: 0px;
@@ -54,12 +53,13 @@ body {
     padding: 40% 0%;
     text-align: center;
     visibility: hidden;
-    z-index: 11;
+    z-index: 12;
     color: white;
 }
 
 #loading-screen-bg{
     visibility: hidden;
+    z-index: 11;
 }
 #loading-screen-bg .spinner{
     padding: 40% 0%;
@@ -78,7 +78,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.6);
-    z-index: 10;
+    z-index: 11;
 }
 #loading-screen-bg img{
     position: fixed;
@@ -88,7 +88,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9;
+    z-index: 10;
 }
 
  .panel-with-tab .row{
@@ -135,7 +135,7 @@ body {
     left: 0px;
     height: 100%;
     width: 100%;
-    z-index: 11;
+    z-index: 20;
     background-image: url('1.jpg');
     background-size: 100% 100%;
 }
@@ -200,16 +200,16 @@ body {
 }
 .panel-with-tab{
     position: absolute;
-    top: 5px;
+    top: 0px;
     left: 0px;
-    z-index: 15;
+    z-index: 20;
 }
 .panel-with-tab #panel{
     position: relative;
     top: 0px;
     right: 0px;
     color: white;
-    z-index: 11;
+    z-index: 19;
     width: 550px;
     background: rgba(10, 10, 10, 0.8);
     padding: 10px;
@@ -220,7 +220,7 @@ body {
     display: inline-block;
     position: absolute;
     left: 570px;
-    top: 10px;
+    top: 0px;
 }
 .panel-with-tab .slider-tab .tab{
     padding: 20px 2px 23px 2px;
@@ -229,7 +229,7 @@ body {
     /*border-radius: 5px 0px 0px 5px;*/
     text-align: center;
     border: none;
-    color: rgba(36, 132, 196, 1);
+    color: #49AAEB;
     font-weight: bold;
     font-size: 7pt;
     cursor: pointer;
@@ -254,16 +254,16 @@ body {
     top: 0px;
     right: -270px;
     color: white;
-    z-index: 11;
+    z-index: 19;
     width: 250px;
     background: rgba(10, 10, 10, 0.8);
     padding: 10px;
     display: inline-block;
-    font-size: 10pt;
+    font-size: 9pt;
     opacity: 0.92;
 }
 .panel-with-tab #panel #street-view-button{
-    background-color: #3FA373;
+    background-color: #20B166;
     cursor: pointer;
 }
 .panel-with-tab #panel #street-view-button:disabled{
@@ -291,15 +291,14 @@ body {
 
 
 #streetview-images img{
-    position: fixed;
+    visibility: hidden;
+    /*position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    /*background-size: cover;
-    background-position: 50% 80%;*/
+    height: 100%;*/
 }
 
 .current-image{
@@ -312,7 +311,7 @@ body {
     width: 100%;
     background: rgba(10, 10, 10, 0.8);
     padding: 22px 0px 0px 10px;
-    z-index: 15;
+    z-index: 20;
 }
 #progressbar .line-visible{
     position: relative;
@@ -329,11 +328,18 @@ body {
 #progressbar .actual-line .tracker{
     position: absolute;
     top: -16px; /* -(trackerheight + 2) */
-    border-top: 14px solid #2499E1;
+    border-top: 14px solid rgba(110, 178, 231, 0.68);
     border-right: 8px solid transparent;
     border-left: 8px solid transparent;
     width: 0px;
     height: 0px;
+    /*cursor: pointer;*/
+}
+#progressbar .line-containment{
+    position: relative;
+    height: 2px;
+    padding-left: 0px; /* trackerwidth/2 - 7 */
+    padding-right: 20px; /* parentpadding * 2 + trackerwidth/2 - 8 */
 }
 #minimap-hider{
     position: fixed;
@@ -342,10 +348,37 @@ body {
     width: 25px;
     height: 22px;
     padding-top: 3px;
-    background: rgba(60, 60, 60, 0.7);
-    z-index: 15;
+    background: rgba(60, 60, 60, 0.9);
+    z-index: 20;
+    color: #49AAEB;
 }
 #minimap-hider:hover{
-    background: rgba(60, 60, 60, 0.95);
+    background: rgba(100, 100, 100, 0.9);
     cursor: pointer;
+}
+#test-sv{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('2.jpg');
+    background-size: cover;
+    background-position: 50% 80%;
+    z-index: 10;
+}
+#tutorial{
+    /*text-align: center;*/
+    position: relative;
+    z-index: 11;
+    display: none;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    padding: 25% 0% 0% 25%;
+    margin-top: -22px;
+}
+
+#tutorial h1{
+    font-weight: 200;
+    line-height: 1.4;
+    color: white;
 }

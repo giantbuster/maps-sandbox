@@ -15,20 +15,8 @@ var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var directionsService = new google.maps.DirectionsService();
 
 //initialize the street view grabber
-var streetVG;
-initializeStreetViewGrabber();
-
-//Initialize StreetViewGallery with needed image options, API key, and div ID
-function initializeStreetViewGrabber(){
-    var imgOptions = {
-        width: 640,
-        height: 640,
-        fov: 90,
-        pitch: 25,
-        key: 'AIzaSyDlPz-ZPQjYceZvOJInQzWbIHB2EkRWDJY'
-    }
-    streetVG = new StreetViewGrabber(imgOptions, 'streetview-images');
-}
+var streetVG = new StreetViewGrabber();
+var tutorial = 0;
 
 // var sanFrancisco = new google.maps.LatLng(37.774950000000004, -122.41929);
 //Initializes Google Maps and Directions
@@ -70,11 +58,59 @@ function handleStreetViewSearch(){
     toggleMinimap();
     toggleMinimapHider();
     toggleProgressbar();
-    // toggleScrollable();
-    // $(window).scrollTop(0);
 }
 
+var displayedImage = 1;
+var currImage = 1;
+
 $(document).ready(function() {
+    /*
+    $(".tracker").draggable({
+        containment: '.line-containment',
+        axis: 'x',
+        drag: function(event, ui) {
+            // console.log('dragging');
+            //16 = trackerwidth. tracker 'left' is determined by its left corner.
+            var containmentWidth = parseInt($('.line-containment').css('width')) - 16;
+            console.log(containmentWidth);
+            var dist = parseInt($('.tracker').css('left'));
+            console.log('dist:', dist);
+            var percentage = dist/containmentWidth * 100;
+            console.log('percentage:', percentage);
+
+            var numImages = streetVG.numImages();
+            // console.log('Num images', numImages);
+            var section = containmentWidth/(numImages-1);
+            // console.log('Section width', section);
+
+            currImage = Math.floor(dist/section) + 1;
+            // console.log('Curr section', currSection);
+
+            // updateDisplayedImage(currSection);
+
+
+            var windowHeight = $(window).height();
+            //subtract 1 to make make sure currImage calculation doesn't exceed numImages
+            var pageHeight = windowHeight + ((numImages-1) * 150);
+
+            // console.log('setScroll', setScroll);
+            
+            if (currImage != displayedImage){
+                updateDisplayedImage(currImage);
+                updateMarker(currImage);
+                displayedImage = currImage;
+                var setScroll = parseInt((pageHeight - windowHeight) * (percentage * 0.01));
+                $(document).scrollTop(setScroll);
+                if (tutorial < 3) {
+                    tutorial++;
+                } else {
+                    $("#tutorial").fadeOut(1000);
+                }
+            }
+        }
+    });
+    */
+
     $('.tab').on('click', function() {
         togglePanel();
         toggleMinimap();
@@ -94,12 +130,10 @@ $(document).ready(function() {
     $('#about-btn').on('click', function() {
         toggleAbout();
         toggleApp();
-        // toggleImgs();
     });
     $('#get-started').on('click', function() {
         toggleAbout();
         toggleApp();
-        // toggleImgs();
     });
 });
 
@@ -164,20 +198,10 @@ function toggleMinimapHider(){
     );
 }
 
-function toggleImgs(){
-    $('#streetview-images').animate({
-        "top": parseInt($('#streetview-images').css('top'))==0 ? "+=1080" : "-=1080"
-        }, 
-        300
-    );      
-}
-
-//scroller.js
-//===========
 //Reads scroll input and parses it accordingly.
-//Changes images, changes markers on google map, updates progress bar.
+//Changes images, moves marker, updates progress bar.
 var scrollable = false;
-var sensitivity = 200;
+var sensitivity = 150;
 var pageHeight;
 
 // $(document).ready(function() {
@@ -185,35 +209,42 @@ var pageHeight;
     var scrollDistance;
     var scrollPercentage;
     var numImages;
-    var displayedImage = 1;
-    var currImage = 1;
 
     $(window).resize(function() {
-        //Set page height for number of images grabbed. 
-        numImages = streetVG.numImages();
-        windowHeight = $(window).height();
-        //subtract 1 to make make sure currImage calculation doesn't exceed numImages
-        pageHeight = windowHeight + (numImages * sensitivity) - 1;
-        $('#container').css("height", pageHeight);
+        setPageHeight();
     });
 
     $(window).scroll(function(){
         if (scrollable){
             scrollDistance = getScrollDistance();
+            // console.log('scrollDistance', scrollDistance);
             scrollPercentage = getScrollPercentage();
             moveTracker(scrollPercentage);
-
-            //Find image for current distance
             currImage = getCurrImage();
 
             //Update current image
             if (currImage != displayedImage){
                 updateDisplayedImage(currImage);
-                updateMarker(currImage, displayedImage);
+                updateMarker(currImage);
                 displayedImage = currImage;
+                if (tutorial < 3) {
+                    tutorial++;
+                } else {
+                    $("#tutorial").fadeOut(1000);
+                }
             }
         }
     });
+
+    function setPageHeight(){
+        //Set page height for number of images grabbed. 
+        numImages = streetVG.numImages();
+        windowHeight = $(window).height();
+        //subtract 1 to make make sure currImage calculation doesn't exceed numImages
+        pageHeight = windowHeight + ((numImages-1) * sensitivity);
+        // console.log('pageheight', pageHeight);
+        $('#container').css("height", pageHeight);
+    }
 
     function getScrollDistance(){
         //maybe constrain this scroll distance so that we don't have to do
@@ -253,12 +284,10 @@ var pageHeight;
     }
 
     function updateDisplayedImage(currImg){
-        $("#streetview-images > img").removeClass("current-image");
-        $("#streetview-images > img:nth-child("+currImg+")" ).addClass("current-image");
+        $("#test-sv").css("background-image", "url(" + streetVG.getImg(currImg-1) + ")");
     }
 
-    function updateMarker(currImg, displayedImg){
-        streetVG.removeMarker(displayedImg-1);
-        streetVG.displayMarker(currImg-1, miniMap);
+    function updateMarker(currImg){
+        streetVG.moveMarker(currImg-1);
     }
 // });

@@ -7,7 +7,7 @@
 
 function StreetViewPoint(latLng, heading, imgOptions){
 	var imgOptions = imgOptions;
-	var latLng = latLng;
+	this.latLng = latLng;
 	var heading = heading;
 	var self = this;
 
