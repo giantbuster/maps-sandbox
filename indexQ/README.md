@@ -1,4 +1,4 @@
-StreetViewGallery
+Daytripper
 =================
 By: Jefferson Lam
 Last Updated: January 24nd, 2014
@@ -6,30 +6,18 @@ Last Updated: January 24nd, 2014
 Special Thanks To:
     Google
     CodingDojo : http://codingdojo.com/
+
+    For the inspiration:
     Brian Folts : http://www.brianfolts.com/driver/
     The Folks behind HyperLapse : http://hyperlapse.tllabs.io/
 
-
-//Tasks
-//=====
-
-//DONE: Add scrolling functionality for viewing images
-//DONE: Remove current pointer upon searching again
-//DONE: Functional progress bar
-//DONE: Show loading message after searching for route
-//DONE: Show loading screen before displaying streetviews and reading input
-//DONE: Split up finding route/find street views buttons
-//DONE: Two maps: A big map for searching routes, and a minimap for showing current image location.
-
-//DONE: Remove duplicate street views before calculating headings
-//DONE: Put everything back into streetviewgrabber.js, rather than being dispersed everywhere.
-//DONE: Segment entire route into equidistant segments, and grab an image from each 
-//      segment, rather than grabbing all images at the start of the route.
+    For the loading spinner:
+    Felix Gnass : fgnass.github.com
 
 
-//FRONT-END:
-    //TODO: Make it possible to click and slide progress bar to move between images
-    
-//BACK-END:
-    //TODO: Set first pointer upon load
-    //TODO: Clean up code. OOP-ify stuff. Less free-floating functions that kinda grab everything from everywhere.
+If you're reading this, you're looking at the first public iteration of this project. My code hasn't quite been optimized yet, but it's on my to-do list. Also, I'm open to any more suggestions for a project name, cause I've been changing the name of this thing pretty often. You will have my utmost thanks and an internet high-five.
+
+Thanks!
+
+-Jefferson Lam
+February 17, 2014

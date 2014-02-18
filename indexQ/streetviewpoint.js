@@ -3,19 +3,19 @@
 //Class: StreetViewPoint
 //========================
 //Generates and stores information of a single street view image call,
-//generating the source URL and marker.
+//generating the source URL and latLng.
 
 function StreetViewPoint(latLng, heading, imgOptions){
 	var imgOptions = imgOptions;
 	this.latLng = latLng;
-	var heading = heading;
+	this.heading = heading;
 	var self = this;
 
 	function createSrc(){
         var src = "http://maps.googleapis.com/maps/api/streetview?location="+
-                    latLng.toUrlValue()+
+                    self.latLng.toUrlValue()+
                     "&heading="+
-                    heading+
+                    self.heading+
                     "&size="+
                     imgOptions.width+"x"+imgOptions.height+
                     "&fov="+
@@ -27,13 +27,5 @@ function StreetViewPoint(latLng, heading, imgOptions){
         self.src = src;
     }
 
-    function createMarker(){
-        var marker = new google.maps.Marker({
-            position: latLng,
-        });
-        self.marker = marker;
-    }
-
     createSrc();
-    createMarker();
 }
